@@ -1,0 +1,213 @@
+/* ================================================================
+   base.css — design.md tokens + @font-face (browser-as-truth)
+
+   ┌─ FONT WIRING ─────────────────────────────────────────────────┐
+   │ At build time, replace the @font-face block below with        │
+   │ entries generated from scripts/font_discovery.py output       │
+   │ (selected-fonts.json). Each entry should point at the         │
+   │ absolute file:/// path of an installed font that matches the  │
+   │ design.md's tone keywords.                                    │
+   │                                                               │
+   │ Example (Linear / "geometric-modern" tone, Windows):          │
+   │   src: url('file:///C:/Windows/Fonts/GmarketSansBold.otf')    │
+   │        format('opentype');                                    │
+   │                                                               │
+   │ AVOID: Pretendard, Noto Sans KR (read as AI-generated).       │
+   │ Then keep --ff-display / --ff-body / --ff-mono in :root in    │
+   │ sync with the chosen family names.                            │
+   └───────────────────────────────────────────────────────────────┘ */
+
+/* @font-face entries injected here by build step */
+
+:root {
+  /* colors */
+  --c-primary: #5e6ad2;
+  --c-on-primary: #ffffff;
+  --c-primary-focus: #5e69d1;
+  --c-ink: #f7f8f8;
+  --c-ink-muted: #d0d6e0;
+  --c-ink-subtle: #8a8f98;
+  --c-ink-tertiary: #62666d;
+  --c-canvas: #010102;
+  --c-surface-1: #0f1011;
+  --c-surface-2: #141516;
+  --c-hairline: #23252a;
+  --c-hairline-strong: #34343a;
+  --c-success: #27a644;
+
+  /* fonts */
+  --ff-display: 'Gmarket Sans', sans-serif;
+  --ff-body:    'Gmarket Sans', sans-serif;
+  --ff-mono:    'Cascadia Code', 'Consolas', monospace;
+
+  /* spacing */
+  --s-xxs: 4px; --s-xs: 8px; --s-sm: 12px; --s-md: 16px;
+  --s-lg: 24px; --s-xl: 32px; --s-xxl: 48px; --s-section: 96px;
+
+  /* rounded */
+  --r-xs: 4px; --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-pill: 9999px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ★ html2pptx: body는 정확히 슬라이드 크기 (LAYOUT_WIDE = 1280×720px) */
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body {
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  font-family: var(--ff-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  /* ★ html2pptx 권장: body에 display:flex로 margin collapse 방지 */
+  display: flex;
+  flex-direction: column;
+  /* ★ Korean safety: 단어 가운데에서 줄바꿈 금지 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* ---------- 슬라이드 컨테이너 ---------- */
+.slide {
+  width: 1280px; height: 720px;
+  padding: 64px;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+
+/* ---------- 텍스트 요소 (반드시 <p>/<h*>/<ul>/<ol>만 사용) ---------- */
+p, h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  margin: 0; padding: 0;
+}
+
+.t-display-xl { font-family: var(--ff-display); font-size: 80px; font-weight: 700; line-height: 1.05; letter-spacing: -3.0px; }
+.t-display-lg { font-family: var(--ff-display); font-size: 56px; font-weight: 700; line-height: 1.10; letter-spacing: -1.8px; }
+.t-display-md { font-family: var(--ff-display); font-size: 40px; font-weight: 700; line-height: 1.15; letter-spacing: -1.0px; }
+.t-headline   { font-family: var(--ff-display); font-size: 28px; font-weight: 700; line-height: 1.20; letter-spacing: -0.6px; }
+.t-card-title { font-family: var(--ff-display); font-size: 22px; font-weight: 500; line-height: 1.25; letter-spacing: -0.4px; }
+.t-subhead    { font-family: var(--ff-display); font-size: 20px; font-weight: 500; line-height: 1.40; letter-spacing: -0.2px; color: var(--c-ink-muted); }
+.t-body-lg    { font-family: var(--ff-body);    font-size: 18px; font-weight: 500; line-height: 1.50; }
+.t-body       { font-family: var(--ff-body);    font-size: 16px; font-weight: 500; line-height: 1.50; }
+.t-body-sm    { font-family: var(--ff-body);    font-size: 14px; font-weight: 500; line-height: 1.50; }
+.t-caption    { font-family: var(--ff-body);    font-size: 12px; font-weight: 500; line-height: 1.40; }
+.t-button     { font-family: var(--ff-body);    font-size: 14px; font-weight: 700; line-height: 1.20; }
+.t-eyebrow    { font-family: var(--ff-body);    font-size: 13px; font-weight: 700; line-height: 1.30;
+                letter-spacing: 0.4px; color: var(--c-ink-subtle); }
+.t-mono       { font-family: var(--ff-mono);    font-size: 13px; font-weight: 400; line-height: 1.50; }
+.t-mono-sm    { font-family: var(--ff-mono);    font-size: 12px; font-weight: 400; line-height: 1.40; }
+
+.muted    { color: var(--c-ink-muted); }
+.subtle   { color: var(--c-ink-subtle); }
+.tertiary { color: var(--c-ink-tertiary); }
+.accent   { color: var(--c-primary); }
+.success  { color: var(--c-success); }
+
+/* ---------- 도형 (★ <div>로만 배경/보더 적용) ---------- */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--c-primary);
+  border-radius: var(--r-md);
+  padding: 8px 18px;
+  min-height: 32px;
+  min-width: 120px;
+  width: max-content;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+.btn-primary p { color: var(--c-on-primary); white-space: nowrap; line-height: 1.0; }
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-md);
+  padding: 8px 18px;
+  min-height: 32px;
+  min-width: 120px;
+  width: max-content;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+.btn-secondary p { color: var(--c-ink); white-space: nowrap; line-height: 1.0; }
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-pill);
+  padding: 2px 10px;
+  min-height: 22px;
+  align-self: flex-start; /* prevent column-flex parent from stretching badge */
+}
+.badge.badge-accent {
+  border-color: var(--c-primary-focus);
+}
+.badge.badge-success {
+  border-color: var(--c-success);
+}
+.badge p { font-family: var(--ff-body); font-size: 12px; font-weight: 700; line-height: 1.4;
+           color: var(--c-ink-muted); }
+.badge.badge-accent p { color: var(--c-primary); }
+.badge.badge-success p { color: var(--c-success); }
+
+.brand-mark {
+  display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.brand-mark .brand-sq {
+  width: 14px; height: 14px;
+  background: var(--c-primary);
+  border-radius: var(--r-xs);
+}
+.brand-mark p {
+  font-family: var(--ff-display); font-size: 14px; font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--c-ink);
+  white-space: nowrap;
+}
+
+.eyebrow-row {
+  display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.eyebrow-row .dot {
+  width: 6px; height: 6px;
+  background: var(--c-primary);
+  border-radius: var(--r-pill);
+}
+.eyebrow-row p { white-space: nowrap; }
+
+.card {
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  display: flex; flex-direction: column;
+}
+
+.card-xl {
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  display: flex; flex-direction: column;
+}
+
+.hairline {
+  height: 1px;
+  background: var(--c-hairline);
+  width: 100%;
+}
+
+/* ---------- 슬라이드 공통 영역 ---------- */
+.top-bar {
+  position: absolute; top: 24px; left: 64px; right: 64px;
+  display: flex; justify-content: flex-start; align-items: center;
+}
+
+.bottom-bar {
+  position: absolute; bottom: 24px; left: 64px; right: 64px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--c-hairline);
+  padding-top: 12px;
+}

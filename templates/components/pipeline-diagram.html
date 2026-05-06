@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Slide 4 — Pipeline Diagram</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .diagram-body { flex: 1; display: flex; flex-direction: column; gap: 24px; padding-top: 32px; }
+  .diagram-section-head { display: flex; flex-direction: column; gap: 8px; }
+  .panel {
+    background: var(--c-surface-1);
+    border: 1px solid var(--c-hairline);
+    border-radius: var(--r-xl);
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .panel-head {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; padding-bottom: 12px;
+    border-bottom: 1px solid var(--c-hairline);
+  }
+  .panel-dots { display: flex; gap: 6px; }
+  .panel-dots .pdot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-hairline-strong); }
+  .panel-filename { text-align: center; }
+  .panel-version { display: flex; justify-content: flex-end; }
+
+  .pipeline-row {
+    display: grid; grid-template-columns: 3fr 3fr 3fr 40px 3fr;
+    gap: 12px; align-items: stretch;
+  }
+  .node {
+    background: var(--c-surface-2);
+    border: 1px solid var(--c-hairline);
+    border-radius: var(--r-md);
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    min-height: 120px;
+  }
+  .node.node-canvas { background: var(--c-canvas); }
+  .node.node-accent { border-left: 2px solid var(--c-primary-focus); }
+  .node.node-llm { border-color: var(--c-primary-focus); border-left: 2px solid var(--c-primary); }
+  .node .lbl { color: var(--c-ink-subtle); font-size: 11px; text-transform: uppercase;
+               letter-spacing: 0.4px; font-weight: 700; }
+  .node .val { color: var(--c-ink); font-family: var(--ff-mono); font-size: 13px; }
+  .node .sub { color: var(--c-ink-subtle); font-size: 11px; font-weight: 700;
+               text-transform: uppercase; letter-spacing: 0.4px; }
+  .arrow-cell {
+    display: flex; align-items: center; justify-content: center;
+  }
+  .arrow-cell p { color: var(--c-ink-tertiary); font-family: var(--ff-mono); font-size: 14px; }
+
+  .success-row {
+    display: flex; align-items: center; gap: 16px;
+    padding-top: 12px; border-top: 1px solid var(--c-hairline);
+  }
+  .badge-success p { color: var(--c-success); }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>Linear</p></div>
+  </div>
+
+  <div class="diagram-body">
+    <div class="diagram-section-head">
+      <div class="eyebrow-row">
+        <div class="dot"></div>
+        <p class="t-eyebrow">한 장 다이어그램</p>
+      </div>
+      <h2 class="t-display-md">조립 라인의 부품들.</h2>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-dots"><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div></div>
+        <div class="panel-filename"><p class="t-mono subtle">rag_pipeline.py</p></div>
+        <div class="panel-version">
+          <div class="badge"><p>v1.0</p></div>
+        </div>
+      </div>
+
+      <div class="pipeline-row">
+        <div class="node node-canvas">
+          <p class="lbl">사용자 질문</p>
+          <p class="val">"환불 가능한가?"</p>
+        </div>
+        <div class="node node-accent">
+          <p class="lbl">RETRIEVER</p>
+          <p class="val">cosine ≥ 0.78</p>
+          <p class="sub">vector_db</p>
+        </div>
+        <div class="node node-accent">
+          <p class="lbl">AUGMENTER</p>
+          <p class="val">ctx + question</p>
+          <p class="sub">+ system 지시</p>
+        </div>
+        <div class="arrow-cell"><p>→</p></div>
+        <div class="node node-llm">
+          <p class="lbl">LLM</p>
+          <p class="val">Claude Haiku 4.5</p>
+          <p class="sub">출처 강제</p>
+        </div>
+      </div>
+
+      <div class="success-row">
+        <div class="badge badge-success"><p>출력 · 출처 포함</p></div>
+        <p class="t-body-sm muted">"7일 이내 환불 가능합니다 (정책 §3.2 인용)"</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">모델은 한 부품일 뿐이다.</p>
+    <p class="t-mono tertiary">diagram</p>
+  </div>
+</section>
+</body>
+</html>

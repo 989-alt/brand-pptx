@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Slide 2 — Data Callout (1,000×)</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .stat-body {
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 32px; padding-top: 24px;
+  }
+  .stat-headline { max-width: 900px; }
+  .stat-row {
+    display: grid; grid-template-columns: 7fr 5fr;
+    gap: 48px; align-items: center;
+  }
+  .stat-num-wrap p {
+    font-family: var(--ff-display);
+    font-size: 220px; font-weight: 700;
+    line-height: 0.95; letter-spacing: -8px;
+    color: var(--c-ink);
+  }
+  .stat-num-wrap .unit {
+    font-size: 96px; letter-spacing: -3px;
+    color: var(--c-primary);
+  }
+  .stat-meta { display: flex; flex-direction: column; gap: 16px; }
+  .source-row { display: flex; align-items: center; gap: 8px; }
+  .source-row .dash { width: 16px; height: 1px; background: var(--c-hairline-strong); }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>Linear</p></div>
+  </div>
+
+  <div class="stat-body">
+    <div class="badge badge-accent">
+      <p>잘못된 통념 #1</p>
+    </div>
+
+    <h2 class="t-display-md stat-headline">"환각은 <span class="subtle">파인튜닝으로만</span> 잡는다"</h2>
+
+    <div class="stat-row">
+      <div class="stat-num-wrap">
+        <p>1,000<span class="unit">×</span></p>
+      </div>
+      <div class="stat-meta">
+        <p class="t-eyebrow">한 번 잡는 데 드는 비용</p>
+        <p class="t-body-lg muted">파인튜닝 1회 학습 vs RAG 1회 응답.<br>같은 환각 1건을 잡는 데 드는 비용 차이.</p>
+        <div class="source-row">
+          <div class="dash"></div>
+          <p class="t-caption tertiary">Anthropic API · 2026 가격표 환산</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">비용은 진짜 적이다.</p>
+    <p class="t-mono tertiary">stat · cost</p>
+  </div>
+</section>
+</body>
+</html>

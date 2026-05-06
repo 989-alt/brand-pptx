@@ -1,0 +1,26 @@
+# Workspace artifacts
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build outputs
+output/
+screenshots/
+tokens.json
+guardrails.json
+selected-fonts.json
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Secrets
+.env
+.env.*
+!.env.example

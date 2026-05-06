@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Slide 5 — Compare Table</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .compare-body { flex: 1; display: flex; flex-direction: column; gap: 24px; padding-top: 32px; }
+  .compare-section-head { display: flex; flex-direction: column; gap: 8px; }
+  .ct-table {
+    background: var(--c-canvas);
+    border: 1px solid var(--c-hairline);
+    border-radius: var(--r-lg);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .ct-row {
+    display: grid; grid-template-columns: 2fr 4fr 4fr;
+  }
+  .ct-row + .ct-row { border-top: 1px solid var(--c-hairline); }
+  .ct-cell {
+    padding: 16px 24px;
+    display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    min-height: 64px;
+  }
+  .ct-head .ct-cell {
+    background: var(--c-surface-1);
+    min-height: 56px; padding-top: 12px; padding-bottom: 12px;
+  }
+  .ct-axis {
+    color: var(--c-ink-subtle); font-family: var(--ff-body);
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .ct-h-title {
+    color: var(--c-ink); font-family: var(--ff-display);
+    font-size: 16px; font-weight: 700; letter-spacing: -0.2px;
+  }
+  .ct-h-sub {
+    color: var(--c-ink-subtle); font-family: var(--ff-mono); font-size: 11px;
+  }
+  .ct-val {
+    color: var(--c-ink); font-family: var(--ff-body);
+    font-size: 15px; font-weight: 700;
+  }
+  .ct-meta {
+    color: var(--c-ink-subtle); font-size: 12px; font-weight: 500;
+  }
+  .ct-val.winner { color: var(--c-primary); }
+  .ct-val.loser  { color: var(--c-ink-tertiary); }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>Linear</p></div>
+  </div>
+
+  <div class="compare-body">
+    <div class="compare-section-head">
+      <div class="eyebrow-row">
+        <div class="dot"></div>
+        <p class="t-eyebrow">정직한 비교</p>
+      </div>
+      <h2 class="t-display-md">파인튜닝 vs RAG, 4가지로 보면.</h2>
+    </div>
+
+    <div class="ct-table">
+      <div class="ct-row ct-head">
+        <div class="ct-cell"><p class="ct-axis">기준</p></div>
+        <div class="ct-cell"><p class="ct-h-title">파인튜닝</p><p class="ct-h-sub">model.fit()</p></div>
+        <div class="ct-cell"><p class="ct-h-title">RAG</p><p class="ct-h-sub">retrieve + prompt</p></div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell"><p class="ct-axis">초기 비용</p></div>
+        <div class="ct-cell"><p class="ct-val loser">$10K~</p><p class="ct-meta">GPU 학습 + 데이터셋</p></div>
+        <div class="ct-cell"><p class="ct-val winner">$0</p><p class="ct-meta">기존 문서 그대로</p></div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell"><p class="ct-axis">반영 속도</p></div>
+        <div class="ct-cell"><p class="ct-val loser">수일~수주</p><p class="ct-meta">재학습 필요</p></div>
+        <div class="ct-cell"><p class="ct-val winner">실시간</p><p class="ct-meta">문서 업데이트만</p></div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell"><p class="ct-axis">출처 추적</p></div>
+        <div class="ct-cell"><p class="ct-val loser">불가</p><p class="ct-meta">가중치 안에 녹음</p></div>
+        <div class="ct-cell"><p class="ct-val winner">가능</p><p class="ct-meta">청크 ID 인용</p></div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell"><p class="ct-axis">필요한 곳</p></div>
+        <div class="ct-cell"><p class="ct-val">스타일·말투 학습</p></div>
+        <div class="ct-cell"><p class="ct-val">사실·최신성·내부 지식</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">둘은 적이 아니다. 다만 첫 수는 RAG.</p>
+    <p class="t-mono tertiary">comparison</p>
+  </div>
+</section>
+</body>
+</html>

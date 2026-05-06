@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Slide 6 — CTA Banner</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .cta-body { flex: 1; display: flex; flex-direction: column; gap: 24px; padding-top: 32px; }
+  .cta-section-head { display: flex; flex-direction: column; gap: 8px; }
+  .banner {
+    background: var(--c-surface-1);
+    border: 1px solid var(--c-hairline);
+    border-radius: var(--r-lg);
+    padding: 48px;
+    display: grid; grid-template-columns: 7fr 5fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .actions { display: flex; flex-direction: column; gap: 24px; }
+  .action-row {
+    display: grid; grid-template-columns: 32px 1fr;
+    gap: 16px; align-items: center;
+  }
+  .action-num-wrap {
+    width: 28px; height: 28px;
+    background: var(--c-surface-2);
+    border: 1px solid var(--c-hairline-strong);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .action-num-wrap p {
+    font-family: var(--ff-mono); font-size: 12px; font-weight: 700;
+    color: var(--c-primary);
+  }
+  .action-body { display: flex; flex-direction: column; gap: 2px; }
+  .action-title {
+    font-family: var(--ff-display); font-size: 16px; font-weight: 700;
+    color: var(--c-ink); letter-spacing: -0.2px;
+  }
+  .action-meta {
+    color: var(--c-ink-subtle); font-size: 13px; font-weight: 500;
+  }
+
+  .cta-cluster { display: flex; flex-direction: column; gap: 16px; }
+  .cta-final {
+    background: var(--c-primary);
+    border-radius: var(--r-md);
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cta-final p {
+    font-family: var(--ff-body); font-size: 15px; font-weight: 700;
+    color: var(--c-on-primary);
+  }
+  .cta-secondary { color: var(--c-ink-subtle); font-size: 13px; font-weight: 500; padding-left: 4px; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>Linear</p></div>
+  </div>
+
+  <div class="cta-body">
+    <div class="cta-section-head">
+      <div class="eyebrow-row">
+        <div class="dot"></div>
+        <p class="t-eyebrow">1주차 액션</p>
+      </div>
+      <h2 class="t-display-md">월요일에, 이거 셋만.</h2>
+    </div>
+
+    <div class="banner">
+      <div class="actions">
+        <div class="action-row">
+          <div class="action-num-wrap"><p>01</p></div>
+          <div class="action-body">
+            <p class="action-title">자주 받는 질문 50개를 뽑는다</p>
+            <p class="action-meta">고객지원 로그 · 사내 위키 댓글 · Slack 검색</p>
+          </div>
+        </div>
+        <div class="action-row">
+          <div class="action-num-wrap"><p>02</p></div>
+          <div class="action-body">
+            <p class="action-title">관련 문서를 청크로 쪼개고 임베딩한다</p>
+            <p class="action-meta">500자 단위 · pgvector 또는 Supabase Vector</p>
+          </div>
+        </div>
+        <div class="action-row">
+          <div class="action-num-wrap"><p>03</p></div>
+          <div class="action-body">
+            <p class="action-title">정답률을 측정하고 빈칸을 찾는다</p>
+            <p class="action-meta">50개 중 N개 정답 → 빠진 문서 보강 → 반복</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-cluster">
+        <p class="t-headline">조립이 학습보다 싸다.</p>
+        <p class="t-body muted">월요일 오전, 50개 질문 리스트로 시작.<br>금요일 오후, 첫 RAG 봇이 답한다.</p>
+        <div class="cta-final"><p>지금 시작하기 →</p></div>
+        <p class="cta-secondary">슬라이드·코드 → s-edu.ai.kr/rag</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">RAG는 LLM 환각을 싸게 잡는 조립 라인이다.</p>
+    <p class="t-mono tertiary">end</p>
+  </div>
+</section>
+</body>
+</html>
