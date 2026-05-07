@@ -199,6 +199,41 @@ p, h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
+/* ============================================================
+   EDGE ALIGNMENT & SPACING RHYTHM utilities
+   See SKILL.md → "Slide-level composition discipline"
+   ============================================================ */
+
+/* Inset compensation — apply when a decorative card stretches in a grid track
+   alongside a multi-item text column. The card's color-field top edge lands
+   on the grid-track top (y=0), but the column's first text glyph top is
+   inset ~4px by line-height. This 4px margin pulls the card down so its
+   top edge meets the first text top.
+
+   Use: <div class="card card-row-aligned">…</div>
+   Empirical for 16-18px body / line-height 1.4-1.55. Larger display type
+   needs 6-8px. ALWAYS render and measure rather than guessing. */
+.card.card-row-aligned { margin-top: 4px; }
+
+/* Last-item padding strip — when a list (checklist, steps, etc.) sits next
+   to a stretched card, the list's :last-child usually carries
+   `padding-bottom: 14px` to space it from a (now-absent) following item.
+   That 14px makes the container-bottom sit BELOW the last text glyph,
+   misaligning with the card's bottom edge. Strip it on :last-child for any
+   list pattern that pairs with a stretched card.
+
+   Apply this rule to your list class's :last-child:
+     .checklist .item:last-child,
+     .steps .step:last-child {
+       padding-bottom: 0;
+       border-bottom: none;
+     } */
+
+/* Layout padding symmetry — when a layout has top and bottom slide padding,
+   keep them equal unless intentionally asymmetric. Asymmetric padding
+   (e.g. 64px top / 48px bottom) reads as off-center. Use one value for
+   both, or document the asymmetry as deliberate. */
+
 /* ---------- 슬라이드 공통 영역 ---------- */
 .top-bar {
   position: absolute; top: 24px; left: 64px; right: 64px;

@@ -31,6 +31,20 @@ If the user only describes a topic without picking a brand, ask **one question**
 - `design.md` path (required)
 - Topic / outline (optional; if absent, propose 6-slide flow Socratically — one question per turn, max 3 questions)
 
+## Output convention — always one combined PPTX
+
+A multi-section deck (multi-day workshop, 3차시, multi-chapter manual) is ONE `.pptx`, never split per section. Section transitions are slides *within* the deck (typically dark hero bands at the start of each section). Splitting a multi-section deck into multiple files is a regression — the user has to merge them manually, navigation breaks, and the design system loses its rotational rhythm. If a user asks for "a deck per session," default to one combined file with section dividers and confirm before producing multiple files.
+
+## Planning gate for long-form decks
+
+For decks > 50 slides, do NOT start authoring immediately. Produce a written plan first:
+- Total slide count and per-section breakdown (table form)
+- Slide-by-slide titles with the assigned component pattern
+- Pattern distribution summary (how many `hero-dark`, `pipeline-diagram`, `screenshot-frame`, etc.) — proves the deck won't be monotonous
+- Any topic decisions that are user-judgement calls (e.g. "the demo project will be X")
+
+Present the plan, ask 1–3 sharp questions about decisions you cannot make alone (project topic, volume, target audience), then build only after the user has approved or redirected.
+
 ## The workflow
 
 ### Phase A — Parse the design system
@@ -57,8 +71,132 @@ Pick 6 slides by default. Mix component patterns — never repeat the same layou
 | `pipeline-diagram` | Linear flow with nodes + arrow + success row |
 | `compare-table` | Honest A vs B comparison |
 | `cta-banner` | Closing slide: numbered actions + CTA |
+| `layout-split-color` | 40/60 horizontal split, brand color on one side, content on the other |
+| `layout-photo-band` | Full-bleed photo with brand-color band across lower third |
+| `layout-color-card-image` | Brand-color card with image floating half-on / half-off |
+| `data-callout-diagonal` | Single big number on a diagonal-cut brand-color block |
+| `team-photo-circles` | Circular photo grid with brand-color accent dots / badges |
+| `quote-overlay` | Photo + dark scrim + large quote text, for north-star slides |
+
+The first six remain the body-density backbone; the last six are the layered compositions enforced by the "Composition layers" section. A 100+ slide deck must draw from all twelve, not just the first six.
 
 Author each slide as an HTML file at `workspace/slides/slide-NN.html`. They all `<link rel="stylesheet" href="base.css">`. The CSS pulls tokens via CSS variables.
+
+### Authoring-time guardrails — apply BEFORE writing each slide, not after
+
+The audit in "Iterate in 5-slide batches" exists to catch failures, but failures are cheaper to *prevent* than to *fix*. Before writing each slide's HTML — not after rendering — walk this checklist. The rules below are scattered across "Voice and copy rules" / "Slide-level composition discipline" / "Composition layers"; this is the consolidated per-slide gate that applies them at authoring time.
+
+**Universal (every slide):**
+- Surface mode picked from the rotation rhythm (not default canvas)
+- Composition pattern differs from the previous slide
+- The slide is *layered*, not flat canvas + black-on-white text + hairlines
+- One key phrase identified, styled with the hierarchy (color · weight · size)
+- Title is declarative — no `왜 ~인가` / `어떻게 ~할까` / `Why X?` self-questioning forms
+- No filler phrases (`함께 알아볼까요?`, `Let's dive in`), no emoji, no per-slide page numbers
+
+**If COVER or SECTION DIVIDER:**
+- Three textual elements maximum: one identifier (eyebrow OR brand-mark, never both) + one headline + one supporting line
+- No "next session preview" labels (`2차시 → ...`)
+- No duplicate identifiers (`SESSION 01 / 03` text + `1차시` badge both saying the same thing)
+- No per-slide operational metadata (`약 3시간 · 슬라이드 32장`)
+
+**If BODY SLIDE with a split layout (`split-2`, `layout-two-tone`, `layout-color-card-image`, `layout-split-color`):**
+- Two columns approximately balance in mass — neither side is half-empty
+- If a decorative card stretches next to a text list (checklist, steps): the card has `.card-row-aligned` (margin-top: 4px) AND the list's `:last-child` has `padding-bottom: 0` so edges meet text bounds
+- Paired columns use **identical top and bottom padding** values in base.css (`.lhs` and `.rhs` do not drift to 80/64)
+- No `margin-top: auto` next to fixed-gap siblings — that *guarantees* one outlier gap. Use `justify-content: space-between` on the column instead (groups must be comparable in size), or compute a fixed gap that fills the column
+- Footer-row, if present, carries NEW information (key principle, sharp contrast, forward pointer) — never a recap of what the body cards already show
+
+**If a CARD on any slide:**
+- Focal block (big number, big quote, callout headline) and its supporting copy read as one block — no `margin-top: auto` orphaning a single aux line at the bottom while the middle goes blank
+- Card content density matches the surrounding rhythm (gaps between sub-elements harmonize with column-level gaps)
+- If the card stretches to match a sibling's height and the natural content is short, fill the middle with a meaningful unit (secondary stat, divider + caption, supporting bullets) — never leave the middle empty
+
+**If body text sits in a card OR a column narrower than ~400px (any layout):**
+- **Hard-break the body text with `<br>` at meaning boundaries.** Do NOT rely on auto-wrap. The browser renders with the linked `@font-face` (e.g. Gmarket Sans) and may show 2 lines fitting comfortably; PowerPoint then falls back to Malgun Gothic / a wider Korean default and the same text overflows the card horizontally. Hard breaks survive font fallback because each line's content is fixed at authoring time, not re-measured at render time.
+- Break at **clauses or adverbial phrases** that read naturally on their own line (`코드를 직접 쓰지 않고,` / `AI에게 의도를 전달해` / `코드를 만들게 하는 방식.`). Avoid orphan modifiers hanging alone (`데이터·저작권` alone on a line as a dangling object).
+- **Match line counts across sibling cards.** If three cards sit side-by-side, all three bodies should be 3 lines (or all 2 lines). Mismatched counts (3/3/2) destroy the grid rhythm. Rewrite the odd-one-out's prose to match — that is the design constraint, not an option.
+- Each line ≤ ~12 Korean characters at 14px body in a 280–320px-inner card. Fallback-font width inflation is ~10–15%; the 12-char line still fits with margin to spare.
+- This rule does NOT apply to body text in wide columns (>400px) — auto-wrap is safe there because the column has enough horizontal slack to absorb fallback-font width drift.
+
+**If a CHECKLIST or numbered STEP list:**
+- `:last-child` has `padding-bottom: 0` and `border-bottom: none` if paired with a stretched card next to it
+
+**Edge and spacing audit (do this in your head before declaring the HTML done):**
+- Identify the implied horizontal lines (where shapes meet text columns). Both the *top* and *bottom* of each shape must align with the first/last text edges of the adjacent column to within 8px
+- No single gap on the slide is more than 2× the next-largest gap
+
+**If any item above cannot be ticked, restructure the slide BEFORE writing HTML.** Do not draft "and we'll fix it during audit." Audit is the safety net, not the design phase.
+
+### Composition layers — never one flat plane
+
+A slide that is one solid background + black-on-white text with a thin hairline reads as a wireframe, not a finished slide. The reference templates that informed this skill (AQUA aquatic, EcoSport sport-report, navy/cream business, Prezfull architectural) deliberately layer surfaces, photos, and brand-color blocks so the eye lands on a focal point. Replicate that — every slide must compose, not just place.
+
+**Layer treatments — use at least one per slide; two when the content allows.**
+
+| Composition | When to use |
+|---|---|
+| `layout-split-color` | Section openers, big quotes, north-star statements. 40/60 split with the brand color on one side, content on the other. |
+| `layout-photo-band` | Section dividers, hero, key claim. Full-bleed photo with a brand-color band crossing the lower third where the title sits. |
+| `layout-color-card-image` | Feature highlights, leader / team profile. Brand-color rectangle, image floats half-on / half-off the card. |
+| `data-callout-diagonal` | Single big number on a diagonal-cut brand-color block (parallelogram clipped from a corner; not symmetric). |
+| `team-photo-circles` | Team grid, gallery. Photos clipped to circles, paired with a small brand-color dot or numeric badge. |
+| `quote-overlay` | North-star statement. Photo + dark scrim + large quote text, brand-color rule above the attribution. |
+| `layout-two-tone` | Body slides that would otherwise be all white. Split the canvas into two adjacent surface tokens (e.g. cream + navy, warm-white + brand). |
+| `text-anchor-block` | Display headings on otherwise plain canvases. Semi-transparent brand-color rectangle anchors the title from behind. |
+
+Distribution targets (deck-wide, not per-slide rule):
+
+- ≥ 40% slides with a photo, image inset, or screenshot as a primary visual element
+- ≥ 30% slides with a brand-color block ≥ 25% of canvas area (not just an eyebrow stripe or a thin top-bar)
+- ≤ 30% slides on a 100% canvas color with no photos and no color blocks beyond an eyebrow — these are body-density slides where the text *is* the visual
+- 0% slides where the only visual elements are three or more thin hairlines and black-on-white text — that is a wireframe, not a finished slide
+- 0% slides on a 100% solid brand-color canvas with white text and no image / shape / contrast layer — that reads as an ad banner, not a slide
+
+**Surface rotation rhythm.** Read `design.md`'s surface tokens (e.g. `surface-dark`, `surface-soft`, `surface-card`, `surface-brand`) and rotate them deliberately:
+
+- 50–60% slides on light canvas (body, procedure, comparison, grids) — but composed, not flat
+- 15–25% slides on the dark surface (section covers, key statements, closer slides, important data callouts)
+- 10–20% slides on a soft / cream / off-white surface (textural variety, recap, footer-style summary)
+- 10–15% slides where the brand color is the primary background (north-star slides, big quote, single-number data callouts)
+
+Place dark and brand-color slides at section boundaries AND at content peaks where a single sentence carries the chapter's argument — the same way the brand site uses a hero band to anchor a page. Two consecutive same-surface slides are allowed only at a section transition (closer of section N + opener of section N+1). Three same-surface slides in a row is a regression.
+
+If `guardrails.json` has a "Don't repeat the same surface mode across two consecutive bands" entry (BMW does), enforce it.
+
+### Transparency and opacity — composition tools, not ornament
+
+The reference templates use opacity to create depth without ornament:
+
+- **Photo overlays.** Brand color at `rgba(R, G, B, 0.78–0.92)` on top of a photo so the photo stays legible while the slide still reads as the brand. Banned: a 100% opaque brand-color tile *next to* a photo with no overlap — that's a flat split, not a layered composition.
+- **Behind-text scrims.** When text sits over a photo, add a gradient scrim on the photo's lower third (`linear-gradient(transparent → rgba(0,0,0, 0.55))`) so contrast is AA without darkening the whole image. Never let large text float over an unscrimmed photo.
+- **Card veils on tinted canvases.** `rgba(255,255,255, 0.88–0.92)` cards on a brand-tinted or cream canvas read more sophisticated than `#ffffff` solid cards on the same canvas.
+- **Quiet branded dividers.** `rgba(brand, 0.12)` instead of the neutral `--c-hairline` when a divider should feel branded but quiet.
+
+Add these tokens in `base.css` (RGB pulled from `tokens.json`, never hardcoded):
+
+```css
+:root {
+  --c-primary-rgb: 28, 105, 212;        /* emit alongside --c-primary in parse_design_md.py */
+  --alpha-scrim-bottom: rgba(0,0,0, 0.55);
+  --alpha-brand-soft:   rgba(var(--c-primary-rgb), 0.12);
+  --alpha-brand-veil:   rgba(var(--c-primary-rgb), 0.85);
+  --alpha-card-veil:    rgba(255,255,255, 0.90);
+  --alpha-dark-veil:    rgba(0,0,0, 0.30);
+}
+```
+
+`parse_design_md.py` must emit `--c-primary-rgb` (and any other channel-needed tokens) so `rgba()` references work without hardcoding. `tokens.json` carries the same values for downstream scripts.
+
+### Photos and imagery — first-class content layer
+
+Empty grey screenshot slots remain correct for procedure / "the user pastes their own screenshot" slides. But section openers, north-star slides, and gallery slides should use real reference imagery:
+
+- Reference photos live in `workspace/images/` and link via `<img src="../images/<name>.jpg">` so html2pptx places them as native PowerPoint images (editable, replaceable in the file).
+- Subject-matter photos must carry meaning — a laptop screen, an architectural detail, a person in the actual context being described. Generic stock (smiling professional pointing at a laptop, abstract "innovation" gradient art, neural-network glow) is banned. It cheapens the deck.
+- Photos must respect the palette. If `design.md` is monochrome blue, prefer photos that already lean blue, or convert to grayscale in the source file before linking. The composition layer above the photo (brand band, scrim, color overlay) is what makes the slide feel branded — not a tinted photo.
+
+If the topic genuinely has no photo material (a pure coding tutorial), substitute heavier color-block compositions and geometric accents — never default to "every slide is white canvas with black text."
 
 ### Phase D — Build editable PPTX
 
@@ -72,23 +210,286 @@ Each text node becomes a native PowerPoint text box; each `<div>` with a backgro
 
 ### Phase E — Verify (REQUIRED)
 
-Run `scripts/screenshot_slides.py` to render each HTML at 1280×720@2x → `screenshots/slide-NN.png`. Open every PNG and inspect:
+Verification is **two-stage**. Browser screenshots verify the SKILL's CSS layout. PPTX/PDF rendering verifies how PowerPoint actually shows the deck — and that is the deliverable, not the screenshot.
+
+**Stage 1 — browser screenshots.** Run `scripts/screenshot_slides.py` to render each HTML at 1280×720@2x → `screenshots/slide-NN.png`. Open every PNG and inspect:
 - Eyebrow dot vertically centered with eyebrow text?
 - Badges compact (not stretched)?
 - Grid columns equal heights?
 - Bottom-bar caption + tag on the same baseline?
 
-If any drift appears, **fix the SKILL** (base.css or component template), not the individual slide. Re-render and re-verify.
+**Stage 2 — PPTX/PDF rendering (REQUIRED, do NOT skip).** After `build_pptx.js` produces the `.pptx`, render its actual PowerPoint output to PNG:
+
+```python
+# pdf2png.py — fast PDF→PNG for verification
+import sys, fitz
+from pathlib import Path
+pdf, out = Path(sys.argv[1]), Path(sys.argv[2])
+out.mkdir(parents=True, exist_ok=True)
+for i, page in enumerate(fitz.open(pdf), 1):
+    page.get_pixmap(dpi=144).save(out / f"pdf-{i:03d}.png")
+```
+
+Open the `.pptx` in PowerPoint → File → Export → PDF (or use LibreOffice headless: `soffice --headless --convert-to pdf <file>.pptx`). Then run `python pdf2png.py output/<deck>.pdf pdf-renders/`. Compare each `pdf-NNN.png` against the matching `slide-NN.png` from Stage 1.
+
+**What only Stage 2 catches:**
+- **Font-fallback overflow.** Browser uses linked `@font-face` (Gmarket Sans, etc.); PowerPoint falls back to a wider Korean default (Malgun Gothic) when the original isn't installed in the client's PowerPoint font path. Body text that wrapped to 2 clean lines in browser overflows the card horizontally in PowerPoint. Stage 1 cannot see this. Stage 2 always does.
+- **Single-line tail-wrap.** A button label or eyebrow that fits on one line in browser may have its last character drop to a second line in PowerPoint (the 10% width buffer in `html2pptx.js` absorbs most cases, but not all).
+- **Glyph-metric drift on display type.** Display headlines may render at noticeably different proportions in PowerPoint vs browser. Layout boxes are still at the right Y, but the text inside reads tighter or looser.
+
+**Diagnostic when Stage 1 ≠ Stage 2.** If a slide looks fine in screenshot but wrong in PDF:
+1. Check whether the difference is **layout** (boxes at wrong Y) or **content** (font-fallback rendering inside correctly-positioned boxes). Most "drift" is the latter and only the offending text needs `<br>` reflow.
+2. Confirm with `debug-positions.js` — a small Playwright script that walks key elements and prints `getBoundingClientRect()`. If the browser positions match expected layout, html2pptx is faithful and the issue is PowerPoint's rendering. If positions are wrong in browser, the CSS itself needs fixing.
+
+```js
+// debug-positions.js — print measured positions for one slide
+const { chromium } = require('playwright');
+const path = require('path');
+(async () => {
+  const slide = path.resolve(process.argv[2]);
+  const browser = await chromium.launch();
+  const page = await (await browser.newContext({ viewport: { width: 1280, height: 720 } })).newPage();
+  await page.goto('file://' + slide.replace(/\\/g, '/'));
+  await page.waitForLoadState('networkidle');
+  console.log(JSON.stringify(await page.evaluate((sels) => sels.map(s => [...document.querySelectorAll(s)].map(el => {
+    const r = el.getBoundingClientRect();
+    return { sel: s, cls: el.className, x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) };
+  })), process.argv.slice(3).length ? process.argv.slice(3) : ['.split-lhs > *', '.split-rhs > *']), null, 2));
+  await browser.close();
+})();
+```
+
+If any drift appears at either stage, **fix the SKILL** (base.css or component template, or insert `<br>` at meaning boundaries in the slide HTML), not by hand-tweaking coordinates. Re-render and re-verify both stages.
+
+### Iterate in 5-slide batches — never write all slides at once
+
+For decks > ~10 slides, do NOT generate the entire deck in one pass. Author 5 slides → render screenshots → open and inspect every PNG → fix any issues in `base.css` or the slide HTML → only then continue to the next batch of 5. The benefits compound:
+
+- A layout bug caught at slide 5 doesn't propagate into slides 6–123.
+- The user sees progress and can redirect tone/voice early, not after the entire deck is wrong.
+- Each batch is a self-contained checkpoint. If the user pauses or context is compressed, you can resume from the last verified batch without re-checking earlier slides.
+
+The batch audit below is the SAFETY NET, not the design phase. The discipline must already be applied at authoring time via "Authoring-time guardrails" in Phase C. The audit catches what slipped through; if it catches the same class of failure twice, the authoring guardrail itself needs sharpening.
+
+Within each batch, before moving on, confirm:
+1. Korean text renders (no `□` tofu, no Latin fallback metric drift).
+2. Surface rotation looks intentional, not random — check the previous batch's last slide → this batch's first slide transition.
+3. No two consecutive slides use the same component pattern unless the content demands it.
+4. Screenshot slots, if any, are empty grey rectangles with no helper text inside.
+5. Check to ensure that the text does not overlap with other text or elements, or extend beyond the layout. If it overlaps or extends beyond the layout, wrap the text based on the context.
+6. Each slide must have a key phrase. Emphasize important phrases, ordinary phrases, and unimportant phrases in that order by varying the color, boldness, and font size.
+7. Run the pre-ship audit from "Slide-level composition discipline": covers/dividers ≤ 3 textual elements, footer-rows say something new, split-layout columns approximately balance, no `margin-top: auto` orphaning card aux text, every visible element earns its place.
+8. Edge-alignment audit — shapes and adjacent text columns share their first/last horizontal lines. Paired columns' bottom (and top) anchors coincide on the same Y. No element floats with edges 8px+ off the implied composition lines.
+9. Spacing-rhythm audit — no single gap on a slide exceeds 2× the next-largest gap. No `margin-top: auto` next to fixed-gap siblings. Inset compensation applied where decorative cards meet text columns.
+10. PPTX/PDF render audit — build the `.pptx`, export to PDF, render `pdf-NNN.png`, compare to `slide-NN.png`. Look specifically for: card body text overflowing the card's right edge (font-fallback width inflation); single-line button/eyebrow text dropping its last character to a second line; sibling cards having mismatched body line counts after fallback re-flow. Browser screenshots alone are insufficient — the deliverable is the PPTX, and the PPTX renders with PowerPoint's font fallback, not the browser's `@font-face`.
+
+Do not "catch up later" — every slide ships only after its batch passed inspection at BOTH stages. If a batch needs a base.css fix or `<br>` reflow, re-render the *entire deck so far* (including earlier batches that share the same CSS), not just the current 5 — the fix may regress them.
+
+## Voice and copy rules (apply to every slide)
+
+These prevent the deck from reading "AI-generated." They are universal — apply them regardless of the brand or topic.
+
+- **No self-questioning titles.** Banned title forms: `왜 ~인가`, `어떻게 ~할까`, `무엇이 ~인가`, `Why X?`, `How does X work?`. Replace with declarative statements or noun phrases. Examples:
+  - `왜 토큰을 알아야 하나` → `토큰을 이해해야 하는 이유` or `토큰이 비용·한계와 직결되는 지점`
+  - `Why caching matters` → `Caching reduces cost and latency` or `The caching dividend`
+- **No slide numbers** anywhere on the slide (no `01 / 24` corner, no `Page 3` footer). Section dividers and the deck table of contents do the navigation work.
+- **No filler text.** Banned phrases: "함께 알아볼까요?", "이번 시간에는 ~을 배워봅시다", "Let's dive in", "Welcome!", "any questions?", and the "이제 ~을 살펴보겠습니다" transition lead-in.
+- **No emoji** unless the user explicitly requests them. This includes section markers, bullet replacements, and decorative checkmarks.
+- **No empty placeholder copy in screenshot slots.** A screenshot frame is a clean grey rectangle (use the design.md's `surface-card` or `surface-soft` token for fill). Do NOT write "여기에 스크린샷을 넣으세요", "Insert screenshot here", "[SCREENSHOT]", or arrows pointing into the box. The slide's title and body copy must explain what the user should capture; the slot itself stays empty so it remains presentable in print and live demos.
+- **Imperative procedure copy.** Step-by-step slides start each step with a verb ("터미널을 연다", "Open the terminal"), not a question or a noun fragment.
+- **Acronyms expanded once.** Full form on first appearance, abbreviated thereafter.
+
+## Slide-level composition discipline (every element earns its place)
+
+These rules complement "Composition layers" (which governs deck-wide rotation) by governing what happens *inside* a single slide. They were extracted from production failures observed when slides were rendered: metadata overload on covers, footer-rows that recap the body, split layouts with one column half-empty, and cards with auxiliary text orphaned at the bottom.
+
+### Cover and section-divider economy
+
+A cover slide and a section divider have ONE job: slow the eye on a single phrase. They are NOT metadata sheets. Limit them to **three textual elements maximum**:
+
+- One identifier — either a `brand-mark` (logo + caption) OR an `eyebrow-row`, never both
+- One display headline (the moment the slide exists for)
+- ONE supporting line — either a single-sentence subhead OR a single bottom caption (`약 3시간 · 32장` style) — never both, never two captions in opposite corners
+
+What this rules out:
+
+- top `brand-mark` + `eyebrow-row` + headline + subhead + bottom-left caption + bottom-right caption + top-right badge — six elements competing for attention; the headline loses voltage
+- "next session preview" labels on a section divider (`2차시 → ANTIGRAVITY로 첫 웹앱` on a 1차시 divider) — dividers pause the deck, they do not preview
+- duplicate identifiers (e.g. `SESSION 01 / 03` text on the left AND a `1차시` coral badge on the right meaning the same thing)
+- per-slide operational metadata (`약 3시간 · 슬라이드 32장`, `Updated 2026-05`, internal session counts) — that belongs in the deck's table-of-contents slide, not on every divider
+
+A cover or divider that feels "too empty" with three elements is doing its job correctly. The drama lives in the typography, not in the metadata density.
+
+### Footer-rows carry new information, not recap
+
+A `footer-row` at the bottom of a body slide should carry a NEW claim, contrast, or forward-pointing pointer — never a restatement of what the cards / pipeline / list above have already shown.
+
+| The body shows | Do NOT write in the footer |
+|---|---|
+| Cards labelled `1차시 / 2차시 / 3차시` | `총 3차시 · 약 9시간` |
+| Pipeline with 4 nodes | `4단계 절차` |
+| Checklist of 5 items | `5가지 준비물` |
+| Compare table A vs B | `A와 B 비교` |
+
+If the footer-row has nothing new to say, **delete the entire row** — including its hairline divider. An empty hairline above redundant text reads as visual noise twice.
+
+What a footer-row CAN say: a key principle that reframes the body (`완성도 ≠ 시간 투자량 — 의도 명확성이 90%`), a sharp contrast (`AI는 만든다. 사람은 판단한다.`), or a forward pointer to a non-obvious next slide. If you cannot write that line in one breath, the footer should not exist.
+
+### Column balance in split layouts
+
+In any 2-column layout (`split-2`, `layout-two-tone`, `layout-color-card-image`, `layout-split-color`), the visual mass of the two columns must approximately balance. A 5-item column next to a 1-stat column reads as half-empty regardless of how strong the stat is, and a 4-item column next to a 4-paragraph column with a tall coral card reads imbalanced when the items end at 50% canvas height while the card fills 100%.
+
+Three escape hatches when columns don't naturally balance:
+
+1. **Equalize content density.** If the lighter column has three units, lift it to four — or compress the heavier side to four. The cleanest fix when both sides have flexible content.
+2. **Vertical-center the lighter column** (`align-self: center` instead of top-aligning). The empty space then sits as breathing room above AND below, not as a hole at the bottom.
+3. **Add one supporting element** to the lighter column — a coral-rule + one-line key phrase, a small spike-mark divider, a footnote-style caption. The element must carry meaning. Never filler ("자세한 내용은 다음 슬라이드에…", "more details to follow").
+
+Inverse rule: if both columns are full but unevenly full (A ends at 70% height, B ends at 100%), do NOT pad A with empty `<div>`s. Either accept the asymmetry as deliberate (some Claude-style editorial layouts read better unbalanced) or trim B.
+
+### Edge alignment — shapes and adjacent text share horizontal lines
+
+This rule complements column balance. Balance is about MASS (total visual weight per column). Edge alignment is about LINES (the implied horizontal lines created where one element ends and the next begins).
+
+When a decorative shape (card, color block, image, photo) sits in a layout next to a text column, the shape's **top edge must align with the first content element's top in the adjacent text column**, and the shape's **bottom edge must align with the last content element's bottom**. The eye reads aligned horizontal lines as intentional composition; floating misaligned edges read as oversight, even when the page otherwise looks "balanced."
+
+Example failure: a coral callout card with `align-self: center` next to a 5-item checklist. The card centers in its grid track (which sizes to the checklist), so the card top sits *below* the first checklist item's top text and the card bottom sits *above* the last item's bottom text. Two new horizontal lines appear where there should be zero — the card visually floats and the slide reads as half-finished, even though the column-balance rule looks satisfied.
+
+Three patterns that achieve edge alignment:
+
+1. **Stretch the shape to the column's vertical span.** Remove the `align-self: center` override so grid `align-items: stretch` (the default) takes over. Inside the shape, distribute content with `justify-content: space-between` (focal at top, supporting at bottom) AND **fill the middle with meaningful content** (sub-stats, secondary divider + caption, supporting bullets). An empty middle between focal-top and aux-bottom is the orphan pattern banned by "Cards: focal block stays compact" — stretch + fill, not stretch + empty.
+2. **Hard-set the shape height** to match the measured column height. Use this when the shape needs intrinsic aspect ratio (a 16/9 photo) and stretching would distort it.
+3. **Top-align the shape and accept the column extends below it.** Acceptable when the shape is genuinely shorter and the visible empty space *below* the shape reads as deliberate breathing room. The column's bottom must still anchor to the slide's padding edge — never float halfway.
+
+#### Paired anchored columns must share their bottom (and top) anchor lines
+
+In `layout-split-color`, `layout-two-tone`, and similar paired layouts, when one column anchors content with `justify-content: space-between` and the other anchors with `margin-top: auto`, the resulting bottom anchors may not share the same horizontal line. The most common cause: **differing bottom (or top) padding values between the two columns**. A 80px / 64px padding mismatch produces a 16px disagreement at the bottom — small enough to look "almost right," large enough to register as wrong.
+
+Fix: equalize bottom padding values between the paired columns. The bottom anchors must coincide on the same Y. The same applies to top anchors when both columns start with content (eyebrow rows, brand-marks). When designing a paired-column layout in `base.css`, pick one padding tuple and apply it to BOTH `.lhs` and `.rhs` — do not let them drift.
+
+#### General invariant
+
+Whenever two elements sit in adjacent columns of a split layout (or anywhere on a slide where they create implied horizontal lines), audit those lines. **Every misalignment ≥ 8px reads as oversight.** The composition fix is almost never to add more content — it is to make the existing edges share Y-coordinates.
+
+#### Inset compensation when edges and text bounds differ
+
+A column container's edges (top/bottom) and its text glyph bounds (first-line top, last-line bottom) are not the same Y. Standard line-height insets push the first text glyph ~3-5px below the container top for body type, and a list's last item often carries `padding-bottom` that pushes the container bottom 12-16px below the last text glyph.
+
+When a decorative shape next to such a column stretches to the grid track height, the shape's color-field edges land on the *container edges* — not the *text edges* the eye actually compares. Two new misalignment lines appear: 4px above first text top, 14px below last text bottom.
+
+Compensate explicitly:
+
+```css
+/* Remove trailing padding on the last list item so container-bottom = text-bottom */
+.checklist .item:last-child,
+.steps .step:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Decorative card next to a text column: small margin-top to match first-text inset */
+.card.card-row-aligned {
+  margin-top: 4px;   /* empirical for 16-18px body, line-height 1.4-1.55 */
+}
+```
+
+The 4px figure is empirical and depends on the specific font and line-height. **Always render and measure** rather than guessing — the eye catches a 6px residual drift just as fast as a 16px drift.
+
+### Spacing rhythm — uniform gaps via fixed tokens, not auto-fill outliers
+
+A slide composes when its visible vertical gaps follow a recognizable rhythm. The eye reads "this is intentionally laid out" when all major gaps share a similar size, or when gaps follow a clear hierarchy (intra-group: small, inter-group: medium). When *one* gap is sized arbitrarily — because `margin-top: auto` absorbed leftover column space, or because `justify-content: space-between` had to redistribute a huge surplus — the rhythm breaks.
+
+Two patterns produce outlier gaps:
+
+1. **`margin-top: auto` next to fixed-gap siblings.** All siblings share `gap: 28px`, but a footer with `margin-top: auto` absorbs ~90px of leftover column space. Result: 4 normal 28px gaps + 1 inflated ~118px gap. The footer feels "exiled to the bottom" instead of "concluding the column."
+2. **`justify-content: space-between` with disparate group heights.** Three groups summing to 250px in a 720px column produce ~235px inter-group gaps. The inter-group gap (235) is many times larger than any padding or intra-group gap (~32). The slide reads as inflated.
+
+Diagnostic: **if any single gap on a slide is more than 2× the next-largest gap, the rhythm is broken.** That outlier gap is what the eye flags.
+
+Fixes (pick the one that matches intent):
+
+- **Replace `margin-top: auto` with `justify-content: space-between` on the column.** Instead of one auto-fill outlier, the leftover space distributes across *all* gaps — uniform but slightly larger than the original `gap` value. Acceptable only if group sizes are comparable; if some groups are much heavier than others, the inter-group gaps still inflate.
+- **Compute a fixed gap that fills the column.** If column inner height is 560 and content totals 358, set `gap: calc((560 - 358) / 4)` for 4 inter-element gaps of ~50px. Brittle but precise.
+- **Add a meaningful element that absorbs the surplus.** A key-principle line, a divider with caption, a secondary stat. The element must carry meaning — never filler ("more details to follow").
+- **Accept that the column is shorter than the canvas allows.** Stack content with fixed `gap: 28px` from the top, leave the bottom of the column as deliberate breathing room. This is the right answer when the column genuinely has nothing more to say.
+
+`justify-content: space-between` is NOT banned — it is the correct fix when groups are comparably sized and you want all gaps uniform. The ban is on `margin-top: auto` next to fixed-gap siblings, because that *guarantees* one outlier gap.
+
+### Cards: focal block stays compact
+
+Inside a card, the focal element (big number, big quote, callout headline) and its supporting copy must read as one block. Do NOT use `margin-top: auto` to push a single auxiliary line to the card's bottom edge while the middle goes blank — the eye reads "empty card" and skips the focal.
+
+The pattern to avoid:
+
+```
+┌──────────────────┐
+│ TIME TO READY    │
+│ 5분              │
+│ 안에 점검 끝.     │
+│                  │
+│                  │   ← orphaned middle, no content
+│                  │
+│ 설치가 어려우면… │   ← orphaned bottom (margin-top: auto)
+└──────────────────┘
+```
+
+The pattern to use:
+
+```
+┌──────────────────┐
+│ TIME TO READY    │
+│ 5분              │
+│ 안에 점검 끝.     │
+│ ──────────────── │   ← divider keeps the eye moving
+│ 설치가 어려우면… │   ← supporting line directly under the divider
+└──────────────────┘
+```
+
+If the card is genuinely taller than the content needs (e.g. forced height to match a sibling card), choose ONE:
+
+- Shrink the card to fit its own content and let the sibling balance via the column-balance rule above
+- Genuinely fill the middle with a meaningful unit (secondary stat, divider + caption, supporting quote) — three units of meaning, not one stat orphaned at top and one caption orphaned at bottom
+
+### Pre-ship audit — "every visible element earns its place"
+
+Before shipping a slide, audit each visible element and ask: **if I deleted this, would the slide still communicate the message?** If yes, delete it. Editorial composition is achieved when nothing remains to be removed, not when every corner is filled.
+
+Common deletion candidates that production decks accumulate:
+
+- Top-corner operational labels (`총 9시간`, `Updated 2026-05`, internal version stamps, `Slide 14 / 32`)
+- Bottom-corner next-slide pointers on dividers (`다음 → 2차시`)
+- `brand-mark` repeated on every slide — the cover, dividers, and closer are enough; body slides do not need a brand-mark unless the slide IS a cover or divider
+- `eyebrow-row` AND `brand-mark` stacked at the top of one slide — pick one
+- A `footer-row` hairline below a slide that has nothing new to add — the hairline alone reads as visual noise
 
 ## Anti-patterns (do NOT)
 
 - **Do not hand-code coordinates** in the build script. Layout lives in CSS only.
 - **Do not use python-pptx** for writes — it corrupts shapes (memory rule). Read-only inspection OK.
 - **Do not embed slides as a single image** — user explicitly requires editable text/shapes.
-- **Do not show page numbers in the top-right** — user explicitly removed.
+- **Do not show page numbers** anywhere on the slide. (Reinforced above.)
 - **Do not use Pretendard / Noto Sans KR** unless the user asks. Use font_discovery.py.
 - **Do not use gradients** if the design.md's Don't section forbids them (check `guardrails.json`).
 - **Do not write Korean strings via the Edit tool inside JS source files** — JSX/JS often mangles them. Author Korean directly inside the HTML files (UTF-8) or extract to JSON with `\uXXXX` escapes (global rule).
+- **Do not split a multi-section deck into multiple PPTX files** without confirming first — one combined `.pptx` is the default (see "Output convention" above).
+- **Do not pin every slide to the canvas color.** Use the design.md's surface tokens — see "Composition layers / Surface rotation rhythm" above.
+- **Do not write helper text inside screenshot slots.** Empty grey frames only — see "Voice and copy rules" above.
+- **Do not ship a deck whose entire body is on one canvas color** with only black text and hairlines. The reference templates this skill is calibrated against (AQUA, EcoSport, navy/cream business, Prezfull) explicitly avoid this — every slide composes. A 60-slide deck with 60 white-canvas + black-text + hairline slides is a regression.
+- **Do not produce a 100% solid brand-color slide with white text and no contrast layer** (image, shape, or scrim). A flat brand-color rectangle reads as a banner ad, not a slide.
+- **Do not use opacity ornamentally.** Alpha layers belong on photos (scrims), behind text (anchor blocks), and on cards over tinted canvases. Random transparent shapes in a corner are decoration; the skill rejects decoration.
+- **Do not repeat the same composition pattern across consecutive slides** (photo+band → photo+band → photo+band reads monotonous even when the photos differ). Rotate compositions as aggressively as surface modes.
+- **Do not use stock "innovation" photography** (smiling professionals pointing at laptops, abstract glow gradients, generic neural-network visuals). Subject-matter photos with editorial value only — see "Photos and imagery" above.
+- **Do not stack 4+ textual elements on a cover or section divider.** Three maximum: one identifier, one headline, one supporting line — see "Cover and section-divider economy" above. `brand-mark + eyebrow + headline + subhead + bottom-left caption + bottom-right caption + corner badge` is six elements; the headline loses.
+- **Do not write a footer-row that recaps what the body already shows.** Cards saying `1차시 / 2차시 / 3차시` do not need `총 3차시 · 약 9시간` underneath. Footer-rows carry new information or get deleted entirely (hairline included).
+- **Do not let one column of a split layout sit half-empty.** A 5-item column next to a 1-stat column is half-empty regardless of how strong the stat is. Equalize density, vertical-center the light side, or add ONE meaningful supporting element — never filler text — see "Column balance in split layouts" above.
+- **Do not use `margin-top: auto` to orphan a card's auxiliary line at the bottom while the middle goes blank.** The eye reads "empty card" and skips the focal. Either compress the card or genuinely fill the middle — see "Cards: focal block stays compact" above.
+- **Do not let a shape's edges float misaligned with the adjacent text column's first/last content edges.** A coral card with `align-self: center` next to a 5-item checklist creates two new horizontal lines the eye reads as "almost-finished." Stretch the shape (and fill its middle), hard-set its height, or top-align it and accept the column extending below — see "Edge alignment" above.
+- **Do not let paired columns of a split layout disagree on bottom (or top) padding.** A 80px/64px mismatch produces a 16px anchor drift at the bottom — small enough to look almost-right, large enough to register as wrong. Equalize padding values across `.lhs` and `.rhs` in `base.css`.
+- **Do not mix `margin-top: auto` with fixed-gap siblings in the same column.** It guarantees one outlier gap (the auto-fill) ≫ the fixed gaps. The eye flags it. Either use `justify-content: space-between` on the column (distributes leftover across all gaps), compute a fixed gap that fills the column, or add a meaningful middle element. See "Spacing rhythm" above.
+- **Do not let a list's `:last-child` keep its `padding-bottom` when a decorative card stretches alongside it.** The card bottom lands at the container bottom; the list's last text glyph sits 14px above that. Two new misalignment lines. Strip `padding-bottom` from the `:last-child` (and add 4px `margin-top` to the card) so edges meet text bounds — see "Inset compensation" above.
+- **Do not ship based on browser screenshots alone.** The deliverable is the `.pptx`, and PowerPoint renders Korean text with whatever fallback font the client has installed (typically Malgun Gothic, ~10–15% wider glyphs than Gmarket Sans / Pretendard / SUIT). Card body text that wraps cleanly to 2 lines in `screenshots/slide-NN.png` will overflow the card's right edge in PowerPoint — the screenshot cannot reveal this. Always run Stage 2 of Phase E (build PPTX → export PDF → render → compare) before declaring a batch done. See "Phase E — Verify" above.
+- **Do not auto-wrap body text in cards or columns < 400px wide.** Auto-wrap re-flows under PowerPoint's wider fallback fonts, so a comfortable 2-line wrap in browser becomes an overflow in PPTX. Hard-break the text with `<br>` at meaning boundaries at authoring time — each line's content is then frozen and survives font fallback. See "If body text sits in a card OR a column narrower than ~400px" in Phase C.
+- **Do not let sibling cards have mismatched body line counts.** Three side-by-side cards with bodies of 3/3/2 lines (or 2/3/2) destroy the grid rhythm. Rewrite the odd-one-out's prose to match the others' line count. Line-count matching is a design constraint, not a "if convenient" preference.
 
 ## Critical CSS contracts (baked into base.css)
 
@@ -124,13 +525,33 @@ If a new component needs a non-stretching badge inside a row-flex parent, no ext
 
 ## PowerPoint compatibility hardening (lessons from production)
 
-PowerPoint applies its own font fallback (e.g. Malgun Gothic when SUIT/Pretendard is missing) and re-measures text boxes. This causes the last character of a single-line text to wrap to a new line, or card body text to overflow its container. Three-layer defense baked into this skill:
+PowerPoint applies its own font fallback (e.g. Malgun Gothic when SUIT/Gmarket Sans/Pretendard isn't installed in the client's PowerPoint font path) and re-measures text boxes. This causes the last character of a single-line text to wrap to a new line, or card body text to overflow its container horizontally. Four-layer defense baked into this skill:
 
 1. **`scripts/html2pptx.js` — single-line width buffer 10%** (was 2%). Every single-line text box is recorded `max(width × 1.10, width + 24px)` wider than measured, absorbing the metric drift between browser font and PowerPoint fallback font.
-2. **`scripts/html2pptx.js` — explicit `wrap` per box.** `wrap: !isSingleLine, autoFit: false`. Multi-line boxes wrap inside the box (so card body text can't overflow); single-line boxes never wrap (so a short button label stays on one line, regardless of fallback metric).
-3. **CSS-side hard locks** — `width: max-content; min-width: 120px; white-space: nowrap` on every CTA/badge/brand-mark. For multi-line card body text, give it explicit `width` AND `height` so html2pptx classifies it as multi-line, and prefer soft `<br>` at meaning boundaries over auto-wrap.
+2. **`scripts/html2pptx.js` — explicit `wrap` per box.** `wrap: !isSingleLine, autoFit: false`. Multi-line boxes wrap inside the box (so card body text can't overflow vertically); single-line boxes never wrap (so a short button label stays on one line, regardless of fallback metric).
+3. **CSS-side hard locks** — `width: max-content; min-width: 120px; white-space: nowrap` on every CTA/badge/brand-mark. For multi-line card body text, give it explicit `width` AND `height` so html2pptx classifies it as multi-line.
+4. **Authoring-time `<br>` at meaning boundaries** — for any body text inside a card or column narrower than ~400px, hard-break the lines yourself. Each line's content is then fixed at authoring time and survives PowerPoint's re-measurement under fallback fonts. See the "If body text sits in a card OR a column narrower than ~400px" guardrail in Phase C.
 
-If you see "마지막 글자만 다음 줄로 떨어지는 사고" or "카드 본문이 카드 밖으로 흘러나가는 사고" in production PowerPoint, the fix is one of these three layers — usually layer 3 (explicit width/height + meaning-`<br>`).
+Layer 4 is the most reliable for narrow-column body text. Layer 2's `wrap: true` only prevents *vertical* overflow (text spilling below the card); it cannot prevent *horizontal* overflow when PowerPoint's wider fallback glyphs push a wrapped line beyond the box's right edge. Hard breaks bypass the problem entirely.
+
+### Diagnostic workflow when production PowerPoint shows drift
+
+When the user reports "PPTX와 스크린샷의 배치가 다르다" (PPTX layout differs from screenshots), run this diagnostic:
+
+1. **Render the PPTX to PDF, then to PNG.** Export the `.pptx` to PDF (PowerPoint File→Export, or `soffice --headless --convert-to pdf`). Use the `pdf2png.py` snippet in Phase E to render each PDF page. This is what the user actually sees — the deliverable, not the browser.
+2. **Compare PDF render against the browser screenshot side-by-side.** Identify whether the issue is:
+   - **Layout drift** (boxes at different Y/X positions) — investigate base.css or html2pptx measurement
+   - **Content drift** (text inside correctly-positioned boxes overflows or rewraps) — apply layer 4 (`<br>`) to the affected text
+3. **Confirm with `debug-positions.js`** (snippet in Phase E). If `getBoundingClientRect()` measurements match the layout you intend, html2pptx is faithful and layer 4 is the right fix. If browser positions are wrong, fix the CSS instead.
+
+Common symptom phrases and their fix layers:
+
+| Symptom | Layer to apply |
+|---|---|
+| 마지막 글자만 다음 줄로 떨어지는 사고 (single-line tail wraps) | Layer 1 (already in html2pptx) — verify CSS uses `white-space: nowrap` |
+| 카드 본문이 카드 밖으로 흘러나가는 사고 (card body overflows right) | Layer 4 — hard-break body with `<br>` at meaning boundaries |
+| 컬럼 사이 하단 정렬이 어긋나는 사고 (paired columns misalign at bottom) | base.css — equalize bottom padding across `.lhs` and `.rhs` |
+| 텍스트 박스 위치는 맞는데 글꼴만 달라 보이는 차이 (correct boxes, different glyphs) | Accept — fallback rendering only, no structural fix needed |
 
 ## File structure
 
@@ -144,14 +565,20 @@ brand-pptx/
 │   ├── html2pptx.js              ← copied from skills/pptx so local node_modules resolve
 │   └── screenshot_slides.py      ← Playwright render at 1280×720@2x for verification
 ├── templates/
-│   ├── base.css                  ← tokens (CSS variables), text classes, components
+│   ├── base.css                  ← tokens (CSS variables incl. --c-primary-rgb + --alpha-*), text classes, components
 │   └── components/
-│       ├── hero.html
+│       ├── hero.html                       ← body-density backbone (6)
 │       ├── data-callout.html
 │       ├── feature-grid-3up.html
 │       ├── pipeline-diagram.html
 │       ├── compare-table.html
-│       └── cta-banner.html
+│       ├── cta-banner.html
+│       ├── layout-split-color.html         ← layered compositions (6)
+│       ├── layout-photo-band.html
+│       ├── layout-color-card-image.html
+│       ├── data-callout-diagonal.html
+│       ├── team-photo-circles.html
+│       └── quote-overlay.html
 ├── references/
 │   └── alignment-guardrails.md   ← anti-patterns + why
 └── examples/
@@ -162,12 +589,12 @@ brand-pptx/
 
 In the workspace (not the skill itself — workspaces own their `node_modules`):
 - Node.js: `pptxgenjs`, `playwright`, `sharp`
-- Python: `playwright`, `python-pptx` (read-only), `pyyaml`
+- Python: `playwright`, `python-pptx` (read-only), `pyyaml`, `pymupdf` (Phase E Stage 2 PDF→PNG)
 
 Install once per workspace:
 ```
 npm i pptxgenjs playwright sharp
-pip install playwright python-pptx pyyaml
+pip install playwright python-pptx pyyaml pymupdf
 python -m playwright install chromium
 ```
 
