@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>01 · Radial Process</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>brand-pptx</p></div>
+    <p class="t-mono tertiary">infographic · radial-process</p>
+  </div>
+
+  <div class="slide-head" style="padding-top: 24px;">
+    <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">학습 설계 5단계</p></div>
+    <h2 class="t-display-md">의도에서 평가까지, 한 사이클.</h2>
+  </div>
+
+  <div class="radial-body">
+    <!-- Left: 5-segment half-circle SVG -->
+    <svg class="radial-svg" viewBox="0 0 360 360">
+      <!-- Segments: 5 wedges of a half-donut (right-half), inner r=80, outer r=170, total arc 180° split into 5 = 36° each -->
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#3d4ba8"/><stop offset="1" stop-color="#4f5bbf"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4a58be"/><stop offset="1" stop-color="#5e6ad2"/>
+        </linearGradient>
+        <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#5e6ad2"/><stop offset="1" stop-color="#6e79d8"/>
+        </linearGradient>
+        <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#7780df"/><stop offset="1" stop-color="#8590e4"/>
+        </linearGradient>
+        <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8e98e8"/><stop offset="1" stop-color="#a3acec"/>
+        </linearGradient>
+      </defs>
+      <!-- Half-donut sweeping from top (12 o'clock) clockwise to bottom (6 o'clock) on the LEFT side, centered around (180,180).
+           Each wedge spans 36°. Use SVG arc paths. -->
+      <g transform="translate(180 180)">
+        <!-- Wedge function: from angle a1 to a2, outer r=160, inner r=80 -->
+        <!-- Wedge 1: 180° (top) → 144° -->
+        <path fill="url(#g1)" d="M 0,-160 A 160 160 0 0 0 -94.0,-129.4 L -47.0,-64.7 A 80 80 0 0 1 0,-80 Z"/>
+        <!-- Wedge 2: 144° → 108° -->
+        <path fill="url(#g2)" d="M -94.0,-129.4 A 160 160 0 0 0 -152.2,-49.4 L -76.1,-24.7 A 80 80 0 0 1 -47.0,-64.7 Z"/>
+        <!-- Wedge 3: 108° → 72° -->
+        <path fill="url(#g3)" d="M -152.2,-49.4 A 160 160 0 0 0 -152.2, 49.4 L -76.1, 24.7 A 80 80 0 0 1 -76.1,-24.7 Z"/>
+        <!-- Wedge 4: 72° → 36° -->
+        <path fill="url(#g4)" d="M -152.2,49.4 A 160 160 0 0 0 -94.0,129.4 L -47.0,64.7 A 80 80 0 0 1 -76.1,24.7 Z"/>
+        <!-- Wedge 5: 36° → 0° -->
+        <path fill="url(#g5)" d="M -94.0,129.4 A 160 160 0 0 0 0,160 L 0,80 A 80 80 0 0 1 -47.0,64.7 Z"/>
+
+        <!-- Center label -->
+        <circle r="68" fill="#0f1011" stroke="#23252a" stroke-width="1"/>
+        <text y="-6" text-anchor="middle" fill="#f7f8f8" font-family="SF Pro Display, system-ui, sans-serif" font-size="22" font-weight="700">5 STAGE</text>
+        <text y="20" text-anchor="middle" fill="#8a8f98" font-family="SF Pro Display, system-ui, sans-serif" font-size="13" font-weight="500">DESIGN CYCLE</text>
+
+        <!-- Dotted connectors emerging from each wedge midpoint to the right side -->
+        <!-- We'll place small white anchor dots at wedge midpoints; the HTML right column has the labels -->
+      </g>
+    </svg>
+
+    <!-- Right: 5 numbered steps -->
+    <div class="steps-col">
+      <div class="step-row">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <div class="step-body">
+          <p class="lbl">STEP 01 · 의도 정렬</p>
+          <p class="t-body desc">학습자가 도달할 행동을 한 문장으로 선언한다.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/></svg></div>
+        <div class="step-body">
+          <p class="lbl">STEP 02 · 콘텐츠 분해</p>
+          <p class="t-body desc">개념·절차·태도로 나누고 위계를 결정한다.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M3 12l4-4 4 4 4-4 4 4"/><circle cx="7" cy="8" r="1.5"/><circle cx="15" cy="8" r="1.5"/></svg></div>
+        <div class="step-body">
+          <p class="lbl">STEP 03 · 활동 설계</p>
+          <p class="t-body desc">학습자가 실제로 손을 움직이는 단위를 만든다.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
+        <div class="step-body">
+          <p class="lbl">STEP 04 · 형성평가</p>
+          <p class="t-body desc">매 단계 끝에 이해도 확인 신호를 끼워넣는다.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M4 20l8-16 8 16M9 14h6"/></svg></div>
+        <div class="step-body">
+          <p class="lbl">STEP 05 · 회고·재설계</p>
+          <p class="t-body desc">데이터를 보고 다음 사이클의 의도를 수정한다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">한 바퀴는 닫혀야 다음 한 바퀴가 의미를 가진다.</p>
+    <p class="t-mono tertiary">slide 01 / 07</p>
+  </div>
+</section>
+</body>
+</html>

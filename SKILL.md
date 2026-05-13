@@ -77,10 +77,64 @@ Pick 6 slides by default. Mix component patterns — never repeat the same layou
 | `data-callout-diagonal` | Single big number on a diagonal-cut brand-color block |
 | `team-photo-circles` | Circular photo grid with brand-color accent dots / badges |
 | `quote-overlay` | Photo + dark scrim + large quote text, for north-star slides |
+| `infographic-radial-process` | 3~6단계 순환/방사형 프로세스. 중앙 라벨 + 호(arc)/원 단위 + 1:1 텍스트 매칭. (e.g. 반원 5단계, 3-ring venn) |
+| `infographic-hierarchy-pyramid` | 3~5단 위계·우선순위·계층. 도형 자체로 비중 시각화. 코너 텍스트로 각 층 설명. 3D variant (`infographic-hierarchy-pyramid-3d`) allowed when "weight" is the message. |
+| `infographic-quadrant-diamond` | 4개 카테고리의 균등 분류. 중앙 앵커 + 4분면 (Z-패턴: 좌상→우상→좌하→우하). 매트릭스(2×2)와 구분: 분면 자체가 카테고리이지 좌표가 아님. |
+| `infographic-pictogram-bar` | 비교 가능한 정량 데이터 (연도별·항목별 수치). 막대를 데이터 대상 픽토그램으로 치환. 강조 항목만 브랜드 컬러, 나머지는 중성색. |
+| `infographic-roadmap-spatial` | 시간·여정 시각화 (timeline, road-shape). 좌→우 진행, 마일스톤마다 아이콘+라벨+분기. |
+| `infographic-narrative-stat` | 단일 큰 통계 + 맥락 일러스트. 숫자가 단독 출현하지 않음. HTML/SVG로 그리기 어려운 경우 stock asset 사용 (Adobe MCP `asset_search`, Pixabay, Freepik). |
 
-The first six remain the body-density backbone; the last six are the layered compositions enforced by the "Composition layers" section. A 100+ slide deck must draw from all twelve, not just the first six.
+The first six are the body-density backbone; the next six are layered compositions enforced by the "Composition layers" section; the last six are infographics enforced by the "Infographics" section below. A 100+ slide deck must draw from across all eighteen, not just one group.
 
 Author each slide as an HTML file at `workspace/slides/slide-NN.html`. They all `<link rel="stylesheet" href="base.css">`. The CSS pulls tokens via CSS variables.
+
+### Infographics — use when structure is the message, not as decoration
+
+The reference templates that informed this skill include geometric process diagrams,
+pictogram charts, narrative infographics, and 3D pyramids. They work because the
+SHAPE itself carries data — not because they add visual interest. Apply the test
+below before choosing an infographic pattern over a bullet list or grid.
+
+**Use an infographic when ANY of the following is true:**
+
+1. The data has a **structural relationship** that a list cannot express:
+   - Sequential (process steps, timeline, roadmap) → `infographic-radial-process`, `infographic-roadmap-spatial`
+   - Hierarchical (priority, foundation→peak) → `infographic-hierarchy-pyramid` (2D or 3D)
+   - Categorical with equal weight (4 pillars, 4 quadrants) → `infographic-quadrant-diamond`
+   - Comparative numeric (year-over-year, A/B/C/D values) → `infographic-pictogram-bar`
+   - Part-to-whole or intersection (overlapping concepts) → 3-ring venn variant of `infographic-radial-process`
+2. A single big number needs **immediate emotional context** — pair it with a
+   subject-matter illustration so it doesn't read as a bare statistic
+   (`infographic-narrative-stat`).
+3. The reader will glance at the slide for ≤5 seconds in a live presentation —
+   shape-as-data is read faster than a 5-bullet list with the same content.
+
+**Do NOT use an infographic when:**
+
+- The information is genuinely a list of unrelated items (use `feature-grid-3up`)
+- The content is a procedure with code/screenshots (use a procedure layout, not
+  a radial diagram with abstract icons)
+- There are >7 items — infographics break down past 7 nodes; switch to a table
+- You're adding it for visual variety only (the test: if you replaced the diagram
+  with a bullet list of the same items, would the meaning change? If no, use bullets)
+
+**3D variants — allowed when "weight" is the message.** A 3D pyramid reads as
+"the bottom carries the top." A 3D bar reads as "this volume is bigger than that."
+Use 3D ONLY when the visual weight of the shape is itself the argument. Flat
+information (lists, equal-weight comparison, sequences) with 3D applied is
+decoration — that fails the test. If HTML/SVG implementation is impractical
+(complex isometric scenes, photorealistic 3D), use stock assets via Adobe MCP
+`asset_search`, Pixabay, or Freepik — link as `<img src="../images/<name>">` so
+html2pptx places them as native PowerPoint images.
+
+**Deck-wide distribution target:**
+
+- 20–30% slides use an infographic pattern (`infographic-*`)
+- 50–60% slides use body-density patterns (`feature-grid`, `compare-table`, `hero`, etc.)
+- 10–20% slides are layered composition slides (`layout-*`, `quote-overlay`)
+- Never two consecutive infographic slides of the same pattern. A radial-process
+  slide followed by another radial-process slide reads as "the AI ran out of
+  ideas." Mix: radial → narrative-stat → pyramid → (body slide) → pictogram-bar.
 
 ### Authoring-time guardrails — apply BEFORE writing each slide, not after
 
@@ -121,6 +175,19 @@ The audit in "Iterate in 5-slide batches" exists to catch failures, but failures
 
 **If a CHECKLIST or numbered STEP list:**
 - `:last-child` has `padding-bottom: 0` and `border-bottom: none` if paired with a stretched card next to it
+
+**If INFOGRAPHIC slide (any `infographic-*` pattern):**
+- One visual unit (arc, segment, pictogram bar, quadrant, tier) maps to exactly one text unit (label + 1~2 line description). No "this arc covers items A, B, C."
+- The visual unit must carry MEANING — pictogram bars should be the subject of the data (factories for factory counts, books for reading volume, code icons for coding). Abstract shapes (plain circles, squares) acceptable only when no meaningful pictogram exists.
+- Color follows the design system's primary + at most one accent or a single hue ramp (e.g. lavender 5-step shade ladder for hierarchy). Banned: rainbow palettes (red/orange/yellow/green/blue all together) unless the brand explicitly allows multi-hue.
+- Numbered sequences (01·02·03) must visually progress — clockwise rotation, left-to-right, or Z-pattern (좌상→우상→좌하→우하). Random placement breaks the read order. **For quadrant-diamond specifically, use Z-pattern and verify the diamond's internal STEP labels and the side cards' STEP labels are at matching Y positions.**
+- Central anchor (if used) carries the slide's noun phrase ("5 STAGE DESIGN CYCLE", "4 PILLARS") — never a verb ("알아봅시다") or filler.
+- Icons inside the diagram use a SINGLE icon family (all outlined, OR all filled — never mixed). Build inline SVGs or import from Lucide/Heroicons/Phosphor; don't import random emoji-style icons.
+- The infographic occupies 55–70% of slide area; remaining space is for the title, eyebrow, and footer (if any). An infographic crammed into 30% with body text dominating defeats the purpose — switch to a body layout instead.
+- For `infographic-narrative-stat`: the big number MUST be accompanied by a subject-matter illustration. Stock asset via Adobe MCP / Pixabay / Freepik is allowed when inline SVG is impractical — drop the file under `workspace/images/` and link with `<img>` (html2pptx embeds it as a native PowerPoint image).
+- For `infographic-pictogram-bar`: all columns share an identical callout/header format. Don't mix plain-text headers on lighter columns with a callout box on the accent column — that reads inconsistent. Accent column = same shape, brand-color fill.
+- For `infographic-hierarchy-pyramid-3d`: SVG cuboid stacking (front rect + top parallelogram + right parallelogram per tier) survives html2pptx as native shapes. CSS 3D transforms (`transform: rotateX`) do NOT — they flatten on export. Always author 3D as SVG polygons, never CSS transforms.
+- For `infographic-roadmap-spatial`: nodes that stagger vertically (Q1 above curve, Q2 below) must verify the lowest node + its description fits inside the 720px canvas. Curve amplitude limited to ~80px above/below midline to leave room for two-row descriptions.
 
 **Edge and spacing audit (do this in your head before declaring the HTML done):**
 - Identify the implied horizontal lines (where shapes meet text columns). Both the *top* and *bottom* of each shape must align with the first/last text edges of the adjacent column to within 8px
@@ -236,6 +303,9 @@ Open the `.pptx` in PowerPoint → File → Export → PDF (or use LibreOffice h
 - **Font-fallback overflow.** Browser uses linked `@font-face` (Gmarket Sans, etc.); PowerPoint falls back to a wider Korean default (Malgun Gothic) when the original isn't installed in the client's PowerPoint font path. Body text that wrapped to 2 clean lines in browser overflows the card horizontally in PowerPoint. Stage 1 cannot see this. Stage 2 always does.
 - **Single-line tail-wrap.** A button label or eyebrow that fits on one line in browser may have its last character drop to a second line in PowerPoint (the 10% width buffer in `html2pptx.js` absorbs most cases, but not all).
 - **Glyph-metric drift on display type.** Display headlines may render at noticeably different proportions in PowerPoint vs browser. Layout boxes are still at the right Y, but the text inside reads tighter or looser.
+- **Silently-dropped section/body backgrounds.** If a slide authors `body { background-image: url(...) }` or `<section style="background-image:url(...)">`, html2pptx does NOT translate that to a slide background. Stage 1 PNG looks correct (browser renders the bg-image fine). Stage 2 reveals that the slide background fell back to the canvas color and the text on it (often `var(--c-on-dark)` ≈ near-white) is invisible. **Always inspect Stage 2 for any slide that was supposed to be dark / branded / full-bleed.** If the symptom appears, fix per layer 5–6 in the hardening section.
+
+**Stage 2 is non-negotiable for decks > 20 slides.** Browser PNG verification alone is insufficient because the most catastrophic failure mode (silently-dropped backgrounds, layer 5) shows ZERO drift in Stage 1 and renders entire slides illegible in Stage 2. Decks under 20 slides may skip Stage 2 only if every slide uses `.slide.canvas` or `.slide.dark` class-based backgrounds (no inline `background-image`).
 
 **Diagnostic when Stage 1 ≠ Stage 2.** If a slide looks fine in screenshot but wrong in PDF:
 1. Check whether the difference is **layout** (boxes at wrong Y) or **content** (font-fallback rendering inside correctly-positioned boxes). Most "drift" is the latter and only the offending text needs `<br>` reflow.
@@ -490,6 +560,14 @@ Common deletion candidates that production decks accumulate:
 - **Do not ship based on browser screenshots alone.** The deliverable is the `.pptx`, and PowerPoint renders Korean text with whatever fallback font the client has installed (typically Malgun Gothic, ~10–15% wider glyphs than Gmarket Sans / Pretendard / SUIT). Card body text that wraps cleanly to 2 lines in `screenshots/slide-NN.png` will overflow the card's right edge in PowerPoint — the screenshot cannot reveal this. Always run Stage 2 of Phase E (build PPTX → export PDF → render → compare) before declaring a batch done. See "Phase E — Verify" above.
 - **Do not auto-wrap body text in cards or columns < 400px wide.** Auto-wrap re-flows under PowerPoint's wider fallback fonts, so a comfortable 2-line wrap in browser becomes an overflow in PPTX. Hard-break the text with `<br>` at meaning boundaries at authoring time — each line's content is then frozen and survives font fallback. See "If body text sits in a card OR a column narrower than ~400px" in Phase C.
 - **Do not let sibling cards have mismatched body line counts.** Three side-by-side cards with bodies of 3/3/2 lines (or 2/3/2) destroy the grid rhythm. Rewrite the odd-one-out's prose to match the others' line count. Line-count matching is a design constraint, not a "if convenient" preference.
+- **Do not decorate body slides with infographics that have no structural data.** An infographic where the radial segments contain text fragments unrelated to each other is a styled bullet list. Use a real bullet list or grid. See "Infographics — use when structure is the message" in Phase C.
+- **Do not exceed 7 nodes in a single infographic.** Past 7, the eye cannot parse the structure at a glance — the infographic's speed advantage disappears. Switch to a table or split across two slides.
+- **Do not mix two infographic patterns on one slide** (e.g. a pyramid + a venn side-by-side). One structural metaphor per slide; the comparison itself becomes the noise.
+- **Do not apply 3D for visual variety alone.** 3D pyramids and 3D bars are allowed ONLY when the visual weight of the shape carries the argument (hierarchy depends on foundation, volume implies magnitude). Flat information with 3D applied is decoration. See "3D variants — allowed when weight is the message" in Phase C.
+- **Do not use CSS 3D transforms (`transform: rotateX/Y/Z`) for 3D shapes.** They render correctly in the browser but flatten on html2pptx export. Author 3D as SVG polygons (front rect + top parallelogram + right parallelogram per tier) — those survive as native PowerPoint shapes.
+- **Do not import infographic templates as raster images** when they are authored by us. A pasted PNG of a "perfect" infographic is uneditable in PowerPoint and a regression. Build infographics as native shapes (`<div>`/SVG) so html2pptx converts them to editable shapes. Stock photo illustration (for `infographic-narrative-stat`) is the exception — there, an `<img>` is correct because the goal is a photographic asset, not a diagram.
+- **Do not mix inconsistent column headers in pictogram-bar.** All columns share the same callout format (same shape, same typography); only the color differs between accent and non-accent. Plain-text header on column A + callout box on column B reads as oversight. See "If INFOGRAPHIC slide" guardrail.
+- **Do not let infographic visual units fall outside the 720px canvas.** Roadmap nodes with vertical stagger, pyramid tiers with depth offset, narrative-stat illustrations — all must verify the lowest pixel of the lowest element fits inside the bottom-bar's start. Don't trust browser scroll-overflow to hide the bug; the PPTX will clip without warning.
 
 ## Critical CSS contracts (baked into base.css)
 
@@ -519,20 +597,48 @@ body { display: flex; flex-direction: column;
 .brand-mark, .brand-mark p { white-space: nowrap; }
 
 /* text only inside <p>/<h*> — html2pptx requirement */
+
+/* Full-bleed dark / brand-color slide — REQUIRED pattern */
+/* Do NOT use `body { background-image: url(...) }` or */
+/* `<section style="background-image:url(...)">` — html2pptx silently drops them */
+/* and the slide background falls back to the canvas color. */
+.slide.fullbleed-dark { padding: 0; position: relative; }
+.slide.fullbleed-dark > .bg-layer {
+  position: absolute; inset: 0;
+  background: var(--c-surface-dark);  /* solid color — always renders as a real shape */
+  z-index: 0;
+}
+.slide.fullbleed-dark > .fg-layer {
+  position: relative; z-index: 1;
+  width: 1280px; height: 720px; padding: 64px 96px;
+  color: var(--c-on-dark);  /* class-based cascade — survives html2pptx */
+  display: flex; flex-direction: column; gap: 28px;
+}
+/* Authoring example:
+<section class="slide fullbleed-dark">
+  <div class="bg-layer"></div>
+  <div class="fg-layer">
+    <h1 class="t-display-hero">개념은 잡혔다.<br>다음은 손의 시간.</h1>
+  </div>
+</section>
+*/
 ```
 
 If a new component needs a non-stretching badge inside a row-flex parent, no extra rule needed (`align-self` is no-op on the cross axis there).
 
 ## PowerPoint compatibility hardening (lessons from production)
 
-PowerPoint applies its own font fallback (e.g. Malgun Gothic when SUIT/Gmarket Sans/Pretendard isn't installed in the client's PowerPoint font path) and re-measures text boxes. This causes the last character of a single-line text to wrap to a new line, or card body text to overflow its container horizontally. Four-layer defense baked into this skill:
+PowerPoint applies its own font fallback (e.g. Malgun Gothic when SUIT/Gmarket Sans/Pretendard isn't installed in the client's PowerPoint font path) and re-measures text boxes. This causes the last character of a single-line text to wrap to a new line, or card body text to overflow its container horizontally. Seven-layer defense baked into this skill:
 
 1. **`scripts/html2pptx.js` — single-line width buffer 10%** (was 2%). Every single-line text box is recorded `max(width × 1.10, width + 24px)` wider than measured, absorbing the metric drift between browser font and PowerPoint fallback font.
 2. **`scripts/html2pptx.js` — explicit `wrap` per box.** `wrap: !isSingleLine, autoFit: false`. Multi-line boxes wrap inside the box (so card body text can't overflow vertically); single-line boxes never wrap (so a short button label stays on one line, regardless of fallback metric).
 3. **CSS-side hard locks** — `width: max-content; min-width: 120px; white-space: nowrap` on every CTA/badge/brand-mark. For multi-line card body text, give it explicit `width` AND `height` so html2pptx classifies it as multi-line.
 4. **Authoring-time `<br>` at meaning boundaries** — for any body text inside a card or column narrower than ~400px, hard-break the lines yourself. Each line's content is then fixed at authoring time and survives PowerPoint's re-measurement under fallback fonts. See the "If body text sits in a card OR a column narrower than ~400px" guardrail in Phase C.
+5. **NEVER use `background-image: url(...)` on `<section>` or `<body>`.** html2pptx does NOT translate this to a PowerPoint slide background. The slide background falls back to the canvas color (e.g. `#F7F4ED` cream) and the linked PNG is silently dropped — `ppt/media/` ends up missing the file entirely. If the slide is supposed to be dark, the canvas-cream slide background combined with `color: var(--c-on-dark)` (≈ `#FCFBF8`) produces **white text on cream** — invisible. **Only `<img>` tags become PowerPoint native images**; section/body bg-image does not. *Production incident: an entire 131-slide deck had 5 hero-dark slides rendered as cream-with-invisible-text because the dark background was authored as `body { background-image: url(...) }` instead of a div + class.*
+6. **Dark / colored surfaces must be a `<div>` shape inside the slide, not a `<section>` / `<body>` background.** Use `.slide.dark { background: var(--c-surface-dark); color: var(--c-on-dark); }` (the class on `<section>` works because html2pptx lays a single solid-fill rectangle for the canvas, but the canvas color is read from the body's computed background — so `.slide.dark` alone is *also* unreliable for full-bleed dark slides). The reliable pattern: a `position: absolute; inset: 0; background: var(--c-surface-dark);` div as the **first child** of `<section class="slide canvas">`, then place all foreground content as siblings on `position: relative; z-index: 1;`. That dark div becomes a real PowerPoint rectangle shape, the slide background underneath stays canvas (PowerPoint's default), and color cascades work because `<section class="slide dark">` keeps the class on the foreground content. See "Full-bleed dark / brand-color slide" in Critical CSS contracts.
+7. **Avoid `style="color: var(--c-on-dark-XX)"` (rgba CSS variables) directly on text.** PowerPoint's solidFill maps the rgba to `<a:srgbClr val="FCFBF8"><a:alpha val="78000"/></a:srgbClr>` — the alpha *is* preserved, but on a slide whose background fell back to canvas-cream (because of layer-5 violation), 78%-alpha cream-on-cream is even harder to see than 100%-alpha cream-on-cream. Prefer class-based color cascade (`.slide.dark p { color: var(--c-on-dark-78); }` in base.css) or solid hex values. When you must inline, audit that the slide actually has a real dark layer underneath.
 
-Layer 4 is the most reliable for narrow-column body text. Layer 2's `wrap: true` only prevents *vertical* overflow (text spilling below the card); it cannot prevent *horizontal* overflow when PowerPoint's wider fallback glyphs push a wrapped line beyond the box's right edge. Hard breaks bypass the problem entirely.
+Layer 4 is the most reliable for narrow-column body text. Layer 2's `wrap: true` only prevents *vertical* overflow (text spilling below the card); it cannot prevent *horizontal* overflow when PowerPoint's wider fallback glyphs push a wrapped line beyond the box's right edge. Hard breaks bypass the problem entirely. Layers 5–6 are the most catastrophic if violated — they make entire slides illegible.
 
 ### Diagnostic workflow when production PowerPoint shows drift
 
@@ -550,6 +656,10 @@ Common symptom phrases and their fix layers:
 |---|---|
 | 마지막 글자만 다음 줄로 떨어지는 사고 (single-line tail wraps) | Layer 1 (already in html2pptx) — verify CSS uses `white-space: nowrap` |
 | 카드 본문이 카드 밖으로 흘러나가는 사고 (card body overflows right) | Layer 4 — hard-break body with `<br>` at meaning boundaries |
+| 텍스트가 맥락 단위로 안 나뉘고 어색하게 끊김 (text doesn't break at meaning boundaries) | Layer 4 — same fix; this is the same symptom from a different angle. PowerPoint's fallback font reflows your auto-wrapped lines into nonsense breaks. Hard-break with `<br>` at clauses |
+| dark 슬라이드인데 글씨가 흰색이라 안 보임 / 캔버스가 cream으로 떨어짐 (dark slide renders as cream canvas with invisible white text) | Layer 5 + Layer 6 — `body { background-image: url(...) }` and `<section style="background:transparent;background-image:url(...)">` were silently dropped. Replace with absolute-positioned dark `<div>` as first child of the section |
+| 다크 영역의 본문 색이 어둡게 가라앉음 / 알파가 다르게 보임 (rgba color appears different in PowerPoint) | Layer 7 — move the color from inline `style="color:var(--c-on-dark-XX)"` to a class-based rule in base.css; or use a solid hex |
+| `ppt/media/` 폴더에 우리가 만든 PNG가 없음 (custom PNGs missing from PPTX media folder) | Layer 5 — section/body bg-image is the cause. Only `<img>` tags become embedded images |
 | 컬럼 사이 하단 정렬이 어긋나는 사고 (paired columns misalign at bottom) | base.css — equalize bottom padding across `.lhs` and `.rhs` |
 | 텍스트 박스 위치는 맞는데 글꼴만 달라 보이는 차이 (correct boxes, different glyphs) | Accept — fallback rendering only, no structural fix needed |
 
@@ -578,7 +688,14 @@ brand-pptx/
 │       ├── layout-color-card-image.html
 │       ├── data-callout-diagonal.html
 │       ├── team-photo-circles.html
-│       └── quote-overlay.html
+│       ├── quote-overlay.html
+│       ├── infographic-radial-process.html       ← infographic patterns (7)
+│       ├── infographic-hierarchy-pyramid.html
+│       ├── infographic-hierarchy-pyramid-3d.html
+│       ├── infographic-quadrant-diamond.html
+│       ├── infographic-pictogram-bar.html
+│       ├── infographic-roadmap-spatial.html
+│       └── infographic-narrative-stat.html
 ├── references/
 │   └── alignment-guardrails.md   ← anti-patterns + why
 └── examples/

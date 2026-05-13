@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>07 · Narrative Stat</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  /* Narrative stat: oversize number + subject-matter SVG illustration on the right.
+     The illustration is a custom SVG (no stock dependency for this test).
+     In production, stock illustration via Adobe MCP / Pixabay / Freepik is allowed. */
+  .narrative-body { flex: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px;
+                    align-items: center; padding-top: 16px; }
+  .narrative-left { display: flex; flex-direction: column; gap: 20px; }
+  .narrative-num-row { display: flex; align-items: baseline; gap: 14px; }
+  .narrative-num { font-family: var(--ff-display); font-weight: 700; font-size: 152px;
+                   color: var(--c-primary); line-height: 0.92; letter-spacing: -6px; }
+  .narrative-unit { font-family: var(--ff-display); font-weight: 700; font-size: 40px;
+                    color: var(--c-ink); letter-spacing: -1px; }
+  .narrative-claim { font-family: var(--ff-display); font-weight: 600; font-size: 26px;
+                     line-height: 1.30; color: var(--c-ink); letter-spacing: -0.5px; }
+  .narrative-context { color: var(--c-ink-muted); font-size: 14px; line-height: 1.6; max-width: 460px; }
+  .narrative-source { font-family: var(--ff-mono); font-size: 11px; color: var(--c-ink-tertiary);
+                      letter-spacing: 0.4px; padding-top: 10px; border-top: 1px solid var(--c-hairline); max-width: 460px; }
+  .narrative-art { background: var(--c-surface-1); border: 1px solid var(--c-hairline);
+                   border-radius: var(--r-xl); padding: 32px;
+                   display: flex; align-items: center; justify-content: center;
+                   height: 460px; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>brand-pptx</p></div>
+    <p class="t-mono tertiary">infographic · narrative-stat</p>
+  </div>
+
+  <div class="slide-head" style="padding-top: 24px;">
+    <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">2026 교사 설문 · n=482</p></div>
+    <h2 class="t-display-md">숫자 하나로 충분한 슬라이드.</h2>
+  </div>
+
+  <div class="narrative-body">
+    <!-- LEFT: big number + claim + context -->
+    <div class="narrative-left">
+      <div class="narrative-num-row">
+        <p class="narrative-num">73<span style="font-size:80px;letter-spacing:-3px;">%</span></p>
+      </div>
+      <p class="narrative-claim">학생의 글쓰기 초안 단계에서<br>AI를 한 번 이상 활용한다.</p>
+      <p class="narrative-context">반면 평가·피드백 단계의 활용은 18%에 그친다. 글을 만들어주는 도구로는 빠르게 자리 잡았지만, 학습자의 사고를 검증하는 도구로는 아직 도입 초기다.</p>
+      <p class="narrative-source">SOURCE — 한국교육개발원 (2026), 초·중·고 교사 482명 응답.</p>
+    </div>
+
+    <!-- RIGHT: subject-matter illustration (custom SVG — desk + screen + person silhouette) -->
+    <div class="narrative-art">
+      <svg viewBox="0 0 360 380" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- soft glow background -->
+        <defs>
+          <radialGradient id="glow" cx="0.5" cy="0.4" r="0.6">
+            <stop offset="0" stop-color="#5e6ad2" stop-opacity="0.18"/>
+            <stop offset="1" stop-color="#5e6ad2" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="360" height="380" fill="url(#glow)"/>
+
+        <!-- desk surface -->
+        <rect x="40" y="290" width="280" height="8" rx="2" fill="#23252a"/>
+        <line x1="60" y1="298" x2="60" y2="360" stroke="#23252a" stroke-width="4"/>
+        <line x1="300" y1="298" x2="300" y2="360" stroke="#23252a" stroke-width="4"/>
+
+        <!-- monitor -->
+        <rect x="100" y="100" width="200" height="140" rx="6" fill="#0f1011" stroke="#34343a" stroke-width="2"/>
+        <rect x="108" y="108" width="184" height="124" rx="3" fill="#141516"/>
+        <!-- screen content: glowing text lines -->
+        <rect x="118" y="120" width="80" height="6" rx="1.5" fill="#5e6ad2"/>
+        <rect x="118" y="134" width="160" height="3" rx="1.5" fill="#62666d"/>
+        <rect x="118" y="142" width="148" height="3" rx="1.5" fill="#62666d"/>
+        <rect x="118" y="150" width="156" height="3" rx="1.5" fill="#62666d"/>
+        <rect x="118" y="164" width="40" height="3" rx="1.5" fill="#8a8f98"/>
+        <rect x="118" y="172" width="140" height="3" rx="1.5" fill="#62666d"/>
+        <rect x="118" y="180" width="120" height="3" rx="1.5" fill="#62666d"/>
+        <!-- cursor / typing indicator -->
+        <rect x="244" y="180" width="2" height="9" fill="#5e6ad2">
+          <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+        </rect>
+        <!-- AI sparkle in corner -->
+        <g transform="translate(268 124)">
+          <path d="M 0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#5e6ad2"/>
+        </g>
+        <!-- stand -->
+        <rect x="180" y="240" width="40" height="20" fill="#23252a"/>
+        <rect x="160" y="258" width="80" height="6" rx="2" fill="#34343a"/>
+
+        <!-- person silhouette (writer at desk) -->
+        <circle cx="200" cy="320" r="12" fill="#5e6ad2" opacity="0.7"/>
+        <path d="M 174 360 Q 200 332 226 360" fill="#5e6ad2" opacity="0.7"/>
+
+        <!-- floating notebook on right -->
+        <rect x="40" y="180" width="46" height="60" rx="3" fill="#141516" stroke="#34343a" stroke-width="1"/>
+        <line x1="48" y1="195" x2="78" y2="195" stroke="#62666d" stroke-width="1.2"/>
+        <line x1="48" y1="205" x2="78" y2="205" stroke="#62666d" stroke-width="1.2"/>
+        <line x1="48" y1="215" x2="72" y2="215" stroke="#62666d" stroke-width="1.2"/>
+        <line x1="48" y1="225" x2="76" y2="225" stroke="#62666d" stroke-width="1.2"/>
+        <!-- pencil -->
+        <rect x="42" y="240" width="48" height="4" rx="1" fill="#62666d" transform="rotate(15 42 240)"/>
+        <polygon points="40,238 44,246 36,246" fill="#34343a"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">큰 숫자는 단독으로 두지 않는다. 맥락 일러스트가 의미를 옮긴다.</p>
+    <p class="t-mono tertiary">slide 07 / 07</p>
+  </div>
+</section>
+</body>
+</html>

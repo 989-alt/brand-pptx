@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>03 · Hierarchy Pyramid (3D)</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .pyramid3d-body { flex: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; padding-top: 8px; }
+  .py-svg-wrap { display: flex; align-items: center; justify-content: center; }
+  .corner-stack { display: flex; flex-direction: column; gap: 10px; }
+  .corner-card { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: center;
+                 padding: 12px 14px;
+                 background: var(--c-surface-1); border: 1px solid var(--c-hairline);
+                 border-radius: var(--r-md); }
+  .corner-card .swatch { width: 18px; height: 18px; border-radius: var(--r-xs);
+                         justify-self: center; }
+  .corner-card.t5 .swatch { background: #b6bdef; }
+  .corner-card.t4 .swatch { background: #9aa3e8; }
+  .corner-card.t3 .swatch { background: #5e6ad2; }
+  .corner-card.t2 .swatch { background: #4a58be; }
+  .corner-card.t1 .swatch { background: #3d4ba8; }
+  .corner-card .body { display: flex; flex-direction: column; gap: 2px; }
+  .corner-card .tag { font-size: 11px; font-weight: 700; letter-spacing: 1px;
+                      color: var(--c-primary); text-transform: uppercase; }
+  .corner-card .ttl { font-family: var(--ff-display); font-weight: 600; font-size: 14px;
+                      color: var(--c-ink); line-height: 1.4; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>brand-pptx</p></div>
+    <p class="t-mono tertiary">infographic · hierarchy-pyramid-3d</p>
+  </div>
+
+  <div class="slide-head" style="padding-top: 24px;">
+    <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">학습 위계 · 3D 변형</p></div>
+    <h2 class="t-display-md">같은 위계, 다른 무게감.</h2>
+  </div>
+
+  <div class="pyramid3d-body">
+    <div class="py-svg-wrap">
+      <!-- SVG cuboid pyramid — viewBox 600x440. Front face widths: 420, 340, 260, 180, 100. Tier height 50, gap 4. -->
+      <svg viewBox="0 0 600 440" width="560" height="440" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="t1f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3d4ba8"/><stop offset="1" stop-color="#4d5bbb"/></linearGradient>
+          <linearGradient id="t2f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a58be"/><stop offset="1" stop-color="#5663cd"/></linearGradient>
+          <linearGradient id="t3f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5e6ad2"/><stop offset="1" stop-color="#6b76d8"/></linearGradient>
+          <linearGradient id="t4f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7780df"/><stop offset="1" stop-color="#8590e4"/></linearGradient>
+          <linearGradient id="t5f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a3acec"/><stop offset="1" stop-color="#b6bdef"/></linearGradient>
+        </defs>
+
+        <!-- baseline shadow -->
+        <ellipse cx="290" cy="386" rx="240" ry="9" fill="#5e6ad2" opacity="0.15"/>
+
+        <!-- TIER 1 (bottom, widest) — front (60,330)-(480,380) -->
+        <polygon points="60,330 80,318 500,318 480,330" fill="#6571c9"/>
+        <polygon points="480,330 500,318 500,368 480,380" fill="#2c3680"/>
+        <rect x="60" y="330" width="420" height="50" fill="url(#t1f)"/>
+        <text x="270" y="362" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="0.4">REMEMBER · UNDERSTAND</text>
+
+        <!-- TIER 2 — front (100,276)-(440,326) -->
+        <polygon points="100,276 120,264 460,264 440,276" fill="#7480d8"/>
+        <polygon points="440,276 460,264 460,314 440,326" fill="#3a4699"/>
+        <rect x="100" y="276" width="340" height="50" fill="url(#t2f)"/>
+        <text x="270" y="308" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="0.4">APPLY</text>
+
+        <!-- TIER 3 — front (140,222)-(400,272) -->
+        <polygon points="140,222 160,210 420,210 400,222" fill="#8590e4"/>
+        <polygon points="400,222 420,210 420,260 400,272" fill="#4a55b6"/>
+        <rect x="140" y="222" width="260" height="50" fill="url(#t3f)"/>
+        <text x="270" y="254" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="0.4">ANALYZE</text>
+
+        <!-- TIER 4 — front (180,168)-(360,218) -->
+        <polygon points="180,168 200,156 380,156 360,168" fill="#9aa3e8"/>
+        <polygon points="360,168 380,156 380,206 360,218" fill="#5e6ad2"/>
+        <rect x="180" y="168" width="180" height="50" fill="url(#t4f)"/>
+        <text x="270" y="200" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="0.4">EVALUATE</text>
+
+        <!-- TIER 5 (top, narrowest) — front (220,114)-(320,164) -->
+        <polygon points="220,114 240,102 340,102 320,114" fill="#b6bdef"/>
+        <polygon points="320,114 340,102 340,152 320,164" fill="#7780df"/>
+        <rect x="220" y="114" width="100" height="50" fill="url(#t5f)"/>
+        <text x="270" y="146" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="0.4">CREATE</text>
+      </svg>
+    </div>
+
+    <div class="corner-stack">
+      <div class="corner-card t5">
+        <div class="swatch"></div>
+        <div class="body">
+          <p class="tag">T5 · CREATE</p>
+          <p class="ttl">새로운 결과물을 설계·합성한다.</p>
+        </div>
+      </div>
+      <div class="corner-card t4">
+        <div class="swatch"></div>
+        <div class="body">
+          <p class="tag">T4 · EVALUATE</p>
+          <p class="ttl">근거 기반으로 가치를 판단한다.</p>
+        </div>
+      </div>
+      <div class="corner-card t3">
+        <div class="swatch"></div>
+        <div class="body">
+          <p class="tag">T3 · ANALYZE</p>
+          <p class="ttl">관계와 구조를 분해한다.</p>
+        </div>
+      </div>
+      <div class="corner-card t2">
+        <div class="swatch"></div>
+        <div class="body">
+          <p class="tag">T2 · APPLY</p>
+          <p class="ttl">아는 것을 새 맥락에 옮긴다.</p>
+        </div>
+      </div>
+      <div class="corner-card t1">
+        <div class="swatch"></div>
+        <div class="body">
+          <p class="tag">T1 · REMEMBER · UNDERSTAND</p>
+          <p class="ttl">학습의 토대 — 모든 위 층이 기댄다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">3D는 위계의 "무게"가 시각적으로 의도일 때만 사용한다.</p>
+    <p class="t-mono tertiary">slide 03 / 07</p>
+  </div>
+</section>
+</body>
+</html>

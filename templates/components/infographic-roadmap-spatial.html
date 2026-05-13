@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>06 · Roadmap Spatial</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  /* roadmap fits 1280×720 canvas. Slide-head ~ 110px, bottom-bar ~ 36px.
+     Available height for diagram ≈ 720 - 64(top pad) - 110(head) - 64(bottom pad) - 36 = ~446px.
+     Curve amplitude limited so all 5 node columns + their descriptions fit. */
+  .roadmap-stage { flex: 1; position: relative; }
+  .road-svg { position: absolute; top: 14px; left: 0; right: 0; width: 100%; height: 80px; pointer-events: none; }
+  .road-row { display: grid; grid-template-columns: repeat(5, 1fr); align-items: start;
+              position: relative; z-index: 2; padding-top: 100px; }
+  .road-node { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 8px;
+               position: relative; }
+  .road-pin {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--c-canvas); border: 2.5px solid var(--c-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--ff-display); font-weight: 700; font-size: 18px; color: var(--c-primary);
+    box-shadow: 0 0 0 6px rgba(94,106,210,0.10);
+    position: relative;
+  }
+  .road-node.is-current .road-pin { background: var(--c-primary); color: #fff; }
+  .road-quarter { font-family: var(--ff-mono); font-size: 11px; color: var(--c-ink-tertiary); letter-spacing: 1px; }
+  .road-label { font-family: var(--ff-display); font-weight: 700; font-size: 15px; color: var(--c-ink); text-align: center; }
+  .road-desc { font-size: 12px; color: var(--c-ink-muted); text-align: center; line-height: 1.5; max-width: 180px; }
+  .road-flag { position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+               background: var(--c-primary); color: #fff;
+               font-size: 9px; font-weight: 700; padding: 2px 8px;
+               border-radius: var(--r-xs); letter-spacing: 0.6px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>brand-pptx</p></div>
+    <p class="t-mono tertiary">infographic · roadmap-spatial</p>
+  </div>
+
+  <div class="slide-head" style="padding-top: 24px;">
+    <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">2026 학습 도구 도입 로드맵</p></div>
+    <h2 class="t-display-md">한 분기에 한 번, 한 가지만.</h2>
+  </div>
+
+  <div class="roadmap-stage">
+    <!-- horizontal road with gentle wave -->
+    <svg class="road-svg" viewBox="0 0 1152 80" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="roadg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#5e6ad2" stop-opacity="0.4"/>
+          <stop offset="0.5" stop-color="#5e6ad2"/>
+          <stop offset="1" stop-color="#9aa3e8" stop-opacity="0.4"/>
+        </linearGradient>
+      </defs>
+      <path d="M 60 40 C 200 40, 250 70, 345 70 S 460 10, 575 10 S 690 70, 805 70 S 920 10, 1092 10"
+            stroke="url(#roadg)" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M 60 40 C 200 40, 250 70, 345 70 S 460 10, 575 10 S 690 70, 805 70 S 920 10, 1092 10"
+            stroke="#0f1011" stroke-width="1.5" fill="none" stroke-dasharray="6 8"/>
+    </svg>
+
+    <div class="road-row">
+      <!-- N1 -->
+      <div class="road-node">
+        <div class="road-pin">01</div>
+        <p class="road-quarter">2026 · Q1</p>
+        <p class="road-label">교사 워크숍</p>
+        <p class="road-desc">한 학년 5명, AI 기초 도구 손에 익히기.</p>
+      </div>
+      <!-- N2 (NOW) -->
+      <div class="road-node is-current" style="padding-top: 70px;">
+        <div class="road-pin">02<div class="road-flag">NOW</div></div>
+        <p class="road-quarter">2026 · Q2</p>
+        <p class="road-label">파일럿 수업</p>
+        <p class="road-desc">3개 차시, 한 단원에 한 번씩만 적용.</p>
+      </div>
+      <!-- N3 -->
+      <div class="road-node">
+        <div class="road-pin">03</div>
+        <p class="road-quarter">2026 · Q3</p>
+        <p class="road-label">데이터 회고</p>
+        <p class="road-desc">학습자 산출물을 모아 어디서 효과가 났는지 점검.</p>
+      </div>
+      <!-- N4 -->
+      <div class="road-node" style="padding-top: 70px;">
+        <div class="road-pin">04</div>
+        <p class="road-quarter">2026 · Q4</p>
+        <p class="road-label">학년 확장</p>
+        <p class="road-desc">검증된 차시만 다른 학년·교과로 옮긴다.</p>
+      </div>
+      <!-- N5 -->
+      <div class="road-node">
+        <div class="road-pin">05</div>
+        <p class="road-quarter">2027 · Q1</p>
+        <p class="road-label">표준화 검토</p>
+        <p class="road-desc">학교 차원의 가이드 문서로 확정한다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">로드맵의 핀은 약속이 아니라 검증 체크포인트다.</p>
+    <p class="t-mono tertiary">slide 06 / 07</p>
+  </div>
+</section>
+</body>
+</html>

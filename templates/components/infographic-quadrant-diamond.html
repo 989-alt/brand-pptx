@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>04 · Quadrant Diamond</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  /* Diamond Z-pattern mapping:
+     LEFT-TOP wedge      = STEP 01 (탐색)        — paired with LEFT-TOP side card
+     RIGHT-TOP wedge     = STEP 02 (생성)        — paired with RIGHT-TOP side card
+     LEFT-BOTTOM wedge   = STEP 03 (적용)        — paired with LEFT-BOTTOM side card
+     RIGHT-BOTTOM wedge  = STEP 04 (평가)        — paired with RIGHT-BOTTOM side card */
+  .quadrant-body { flex: 1; display: grid; grid-template-columns: 1fr 460px 1fr; gap: 32px;
+                   align-items: center; padding-top: 8px; }
+  .quad-side { display: grid; grid-template-rows: 1fr 1fr; gap: 20px; height: 100%; padding: 8px 0; }
+  .quad-card { display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+  .quad-side.is-left .quad-card { text-align: right; align-items: flex-end; }
+  .quad-card .step { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--c-primary); text-transform: uppercase; }
+  .quad-card .ttl { font-family: var(--ff-display); font-weight: 700; font-size: 20px; color: var(--c-ink); letter-spacing: -0.3px; }
+  .quad-card .desc { color: var(--c-ink-muted); font-size: 13px; line-height: 1.55; max-width: 280px; }
+
+  .diamond-stage { width: 460px; height: 460px; position: relative;
+                   display: flex; align-items: center; justify-content: center; }
+  .diamond-svg { width: 460px; height: 460px; }
+  .diamond-center { position: absolute; width: 130px; height: 130px; border-radius: 50%;
+                    background: var(--c-canvas); border: 1.5px solid var(--c-hairline);
+                    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .diamond-center .ttl { font-family: var(--ff-display); font-weight: 700; font-size: 17px; letter-spacing: -0.4px; color: var(--c-ink); }
+  .diamond-center .sub { font-size: 10px; color: var(--c-ink-subtle); letter-spacing: 1px; font-weight: 700; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>brand-pptx</p></div>
+    <p class="t-mono tertiary">infographic · quadrant-diamond</p>
+  </div>
+
+  <div class="slide-head" style="padding-top: 24px;">
+    <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">AI 학습 활용 · 네 기둥</p></div>
+    <h2 class="t-display-md">네 가지 모드, 한 가지 학습.</h2>
+  </div>
+
+  <div class="quadrant-body">
+    <!-- LEFT SIDE: STEP 01 (top), STEP 03 (bottom) -->
+    <div class="quad-side is-left">
+      <div class="quad-card">
+        <p class="step">STEP 01</p>
+        <p class="ttl">탐색</p>
+        <p class="desc">막힌 개념을 다시 설명해 달라고 요청한다.<br>새로운 비유를 받아 자기 언어로 옮긴다.</p>
+      </div>
+      <div class="quad-card">
+        <p class="step">STEP 03</p>
+        <p class="ttl">적용</p>
+        <p class="desc">학습한 개념을 실제 문제에 옮긴다.<br>AI는 보조 도구이지 대체가 아니다.</p>
+      </div>
+    </div>
+
+    <!-- CENTER: diamond -->
+    <div class="diamond-stage">
+      <svg class="diamond-svg" viewBox="0 0 460 460">
+        <defs>
+          <linearGradient id="qLT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a55b6"/><stop offset="1" stop-color="#5e6ad2"/></linearGradient>
+          <linearGradient id="qRT" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7480df"/><stop offset="1" stop-color="#5e6ad2"/></linearGradient>
+          <linearGradient id="qLB" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7480df"/><stop offset="1" stop-color="#5e6ad2"/></linearGradient>
+          <linearGradient id="qRB" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#a3acec"/><stop offset="1" stop-color="#7480df"/></linearGradient>
+        </defs>
+
+        <!-- Wedges centered on (230,230), apex at top/right/bottom/left points -->
+        <!-- LEFT-TOP wedge: vertices top(230,30) - center(230,230) - left(30,230) -->
+        <polygon points="230,30 230,230 30,230" fill="url(#qLT)"/>
+        <!-- RIGHT-TOP wedge: top(230,30) - right(430,230) - center(230,230) -->
+        <polygon points="230,30 430,230 230,230" fill="url(#qRT)"/>
+        <!-- LEFT-BOTTOM wedge: center(230,230) - left(30,230) - bottom(230,430) -->
+        <polygon points="230,230 30,230 230,430" fill="url(#qLB)"/>
+        <!-- RIGHT-BOTTOM wedge: center(230,230) - right(430,230) - bottom(230,430) -->
+        <polygon points="230,230 430,230 230,430" fill="url(#qRB)"/>
+
+        <!-- Labels at wedge centroids -->
+        <!-- LT centroid ≈ (163,163) -->
+        <text x="163" y="143" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">STEP 01</text>
+        <text x="163" y="168" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="22" font-weight="700">탐색</text>
+        <!-- RT centroid ≈ (297,163) -->
+        <text x="297" y="143" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">STEP 02</text>
+        <text x="297" y="168" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="22" font-weight="700">생성</text>
+        <!-- LB centroid ≈ (163,297) -->
+        <text x="163" y="298" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">STEP 03</text>
+        <text x="163" y="323" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="22" font-weight="700">적용</text>
+        <!-- RB centroid ≈ (297,297) -->
+        <text x="297" y="298" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">STEP 04</text>
+        <text x="297" y="323" text-anchor="middle" fill="#fff" font-family="SF Pro Display, system-ui, sans-serif" font-size="22" font-weight="700">평가</text>
+      </svg>
+      <div class="diamond-center">
+        <p class="ttl">AI 학습</p>
+        <p class="sub">4 PILLARS</p>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: STEP 02 (top), STEP 04 (bottom) -->
+    <div class="quad-side">
+      <div class="quad-card">
+        <p class="step">STEP 02</p>
+        <p class="ttl">생성</p>
+        <p class="desc">초안을 빠르게 만든다.<br>그 위에 자기 손으로 의도를 덮어쓴다.</p>
+      </div>
+      <div class="quad-card">
+        <p class="step">STEP 04</p>
+        <p class="ttl">평가</p>
+        <p class="desc">AI가 만든 답에서 잘못된 가정을 짚어낸다.<br>비판 없이 받아쓰지 않는다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">네 면이 만나는 자리에 학습자가 있다.</p>
+    <p class="t-mono tertiary">slide 04 / 07</p>
+  </div>
+</section>
+</body>
+</html>
