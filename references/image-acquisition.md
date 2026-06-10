@@ -18,7 +18,7 @@ Pick by what the asset *is*, not a single linear order:
 
 **Stock photos are for subjects, not backgrounds.** `image_search.py "abstract blue background"` returns off-tone (cyan) + busy imagery that ruins glass legibility — verified. Use Sharp mesh for the canvas behind glass; reserve Pixabay for a real subject on a text-driven slide.
 
-**Free-first rule:** try Sharp (exact, free) and Pixabay (free) before AI generation. Only reach for `image_gen.py` when the user wants a rich illustration/photo *and* an API key is set. With no keys at all, every row still resolves (Sharp / empty slot) — the deck never blocks.
+**Free-first rule:** try Sharp (exact, free) and Pixabay (free) before AI generation. Only reach for `image_gen.py` when the user wants a rich illustration/photo *and* AI generation was enabled at first use. Whether AI generation runs, and which provider/key it uses, is settled **once per session** by the first-use gate in SKILL.md ("Image generation — ask ONCE at first use"): the user is asked (1) whether to use AI generation at all, then (2) GPT (`OPENAI_API_KEY`) vs KIE.AI (`KIE_API_KEY`). With no key (or the user declines), every row still resolves (Sharp / empty slot) — the deck never blocks.
 
 ## The manifest (`workspace/images/image_prompts.json`)
 
@@ -42,9 +42,11 @@ Pick by what the asset *is*, not a single linear order:
 python scripts/image_search.py "blue gradient mesh" --filename bg-hero.jpg \
     --orientation landscape --min-width 1600 -o workspace/images
 
-# optional AI generation (only if OPENAI_API_KEY set; else prints fallback guidance)
+# optional AI generation — provider chosen at first use (OPENAI_API_KEY or KIE_API_KEY in
+# workspace/.env). Auto-detects provider by which key is set, or force with --provider.
 python scripts/image_gen.py "isometric soft-3D blue app icon, glossy, white bg" \
     --filename b-spark.png --aspect 1:1 -o workspace/images
+python scripts/image_gen.py --provider kie "soft-3D blue cube, white bg" --filename c.png  # force KIE.AI
 #   or batch:  python scripts/image_gen.py --manifest workspace/images/image_prompts.json
 
 # brand-exact gradients / soft-3D chips (free, no key) — author a small Sharp script

@@ -31,6 +31,22 @@ If the user only describes a topic without picking a brand, ask **one question**
 - `design.md` path (required)
 - Topic / outline (optional; if absent, propose 6-slide flow Socratically — one question per turn, max 3 questions)
 
+## Image generation — ask ONCE at first use (REQUIRED)
+
+Before any image work (and before Phase D), settle AI image generation **one time per session** using `AskUserQuestion`. Once decided, do NOT re-ask on later turns — carry the choice for the rest of the session.
+
+1. **First, ask whether to use AI image generation at all.**
+   Question (Korean): "이번 작업에서 AI 이미지(아이콘·일러스트) 생성 기능을 사용할까요?" — options: 사용함 / 사용 안 함.
+   - **No** → provider = `none`. Skip `image_gen.py` entirely; resolve every visual through the free-first chain (Sharp raster → Pixabay → empty grey slot). The deck still completes — do NOT ask the key question.
+   - **Yes** → go to step 2.
+2. **Then, ask which API key to use.**
+   Question (Korean): "이미지 생성에 어떤 API 키를 쓸까요? — GPT(OpenAI) / KIE.AI". Cost is trivial either way (a full deck's icons ≈ under ~$1 at medium quality), so pick by access, not price:
+   - **GPT (OpenAI)** → env var `OPENAI_API_KEY`. Cheapest per image; requires an OpenAI account with billing enabled.
+   - **KIE.AI** → env var `KIE_API_KEY`. No OpenAI account needed, single key, free trial credits; marginally pricier per image. Uses `gpt-image-2` via KIE's job API.
+3. **Then, request the key.** Ask the user to put ONLY the key into `workspace/.env` (a private file) as `OPENAI_API_KEY=...` **or** `KIE_API_KEY=...`, then reply "done". **Never echo or print the key.** Generation runs via `python scripts/image_gen.py --provider {openai|kie} ...`, which reads the key from `.env`.
+
+Image generation is an upgrade, never a requirement: with provider = `none` (or no key supplied) the build still finishes through the free-first fallback.
+
 ## Output convention — always one combined PPTX
 
 A multi-section deck (multi-day workshop, 3차시, multi-chapter manual) is ONE `.pptx`, never split per section. Section transitions are slides *within* the deck (typically dark hero bands at the start of each section). Splitting a multi-section deck into multiple files is a regression — the user has to merge them manually, navigation breaks, and the design system loses its rotational rhythm. If a user asks for "a deck per session," default to one combined file with section dividers and confirm before producing multiple files.

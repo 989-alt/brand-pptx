@@ -70,6 +70,17 @@ The skill walks five phases:
 
 ---
 
+## Image generation (optional)
+
+Most visuals resolve **free-first** — brand-exact gradients (Sharp), free stock (Pixabay), or empty slots the user fills in. Rich illustrations and icons can optionally be **AI-generated**. At first use the skill asks **once**:
+
+1. **Whether to use AI image generation at all** — decline and the build still completes through the free-first fallback.
+2. **Which provider / key** — **GPT (OpenAI)** (`OPENAI_API_KEY`) or **KIE.AI** (`KIE_API_KEY`, no OpenAI account needed; free trial credits).
+
+Put the chosen key in `workspace/.env` (gitignored, never echoed). Generation runs via `scripts/image_gen.py --provider {openai|kie}` (gpt-image-2; white background keyed to transparent for icons). Cost is trivial — a full deck's icons run well under ~$1 at medium quality.
+
+---
+
 ## Component patterns
 
 Pick one per slide; never repeat the same pattern twice in a row unless content demands it.
