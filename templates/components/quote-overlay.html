@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Quote — Overlay</title>
+<link rel="stylesheet" href="base.css">
+<!-- North-star quote. With a photo: replace .stage's background div with
+     <img class="bleed"> + keep a scrim div (.bleed with --alpha-scrim-bottom).
+     Here (no photo) the stage is a full-bleed dark surface. Brand rule above
+     the attribution. Large quote — never self-questioning. -->
+<style>
+  .stage { position: relative; width: 1280px; height: 720px; padding: 96px 120px;
+           display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+  .scrim { background: var(--c-surface-1); }              /* photo stand-in (swap for <img>) */
+  .quote-mark { font-family: var(--ff-display); font-size: 96px; font-weight: 700;
+                color: var(--c-primary); line-height: 0.6; }
+  .quote-text { max-width: 940px; }
+  .attrib { display: flex; flex-direction: column; gap: 10px; }
+  .attrib .rule { width: 48px; height: 3px; background: var(--c-primary); }
+</style>
+</head>
+<body>
+<section class="slide" style="padding:0;">
+  <div class="bleed scrim"></div>
+  <div class="stage">
+    <p class="quote-mark">“</p>
+    <h2 class="t-display-lg quote-text">측정할 수 없으면<br>개선할 수 없다.</h2>
+    <div class="attrib">
+      <div class="rule"></div>
+      <p class="t-body-lg">피터 드러커 · 경영학자</p>
+      <p class="t-caption tertiary">분기 운영 원칙의 출발점</p>
+    </div>
+  </div>
+</section>
+</body>
+</html>

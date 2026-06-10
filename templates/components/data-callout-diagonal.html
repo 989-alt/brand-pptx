@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Data Callout — Diagonal</title>
+<link rel="stylesheet" href="base.css">
+<!-- Single big number on a brand-color block. The diagonal cut (clip-path) is a
+     BROWSER-ONLY flourish — html2pptx flattens it to a clean brand rectangle
+     (clip-path is ignored). Still reads as a bold brand-color callout in pptx. -->
+<style>
+  .dc-block {
+    position: absolute; top: 0; left: 0; bottom: 0; width: 62%;
+    background: var(--c-primary);
+    clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);    /* browser only */
+    padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  }
+  .dc-block .eb { font-family: var(--ff-body); font-size: 14px; font-weight: 700;
+                  letter-spacing: 0.4px; color: rgba(255,255,255,0.85); }
+  .dc-num { font-family: var(--ff-display); font-weight: 700; font-size: 220px;
+            line-height: 0.9; letter-spacing: -10px; color: #ffffff; }
+  .dc-num .unit { font-size: 96px; letter-spacing: -3px; }
+  .dc-sub { color: rgba(255,255,255,0.88); max-width: 460px; }
+  .dc-side {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 38%;
+    padding: 64px 64px 64px 24px; display: flex; flex-direction: column; justify-content: center; gap: 14px;
+  }
+</style>
+</head>
+<body>
+<section class="slide" style="padding:0;">
+  <div class="dc-block">
+    <p class="eb">한 번 잡는 데 드는 비용</p>
+    <p class="dc-num">1,000<span class="unit">×</span></p>
+    <p class="t-subhead dc-sub">파인튜닝 1회 학습 vs RAG 1회 응답.</p>
+  </div>
+
+  <div class="dc-side">
+    <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">비용 격차</p></div>
+    <h3 class="t-headline">같은 환각 1건,<br>천 배의 비용 차이.</h3>
+    <p class="t-body muted">학습은 무겁고 응답은 가볍다. 같은 문제를 잡아도 접근에 따라 비용은 세 자릿수로 갈린다.</p>
+  </div>
+</section>
+</body>
+</html>

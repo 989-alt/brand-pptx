@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Layout — Split Color 40/60</title>
+<link rel="stylesheet" href="base.css">
+<!-- 40/60 split: brand color on one side, content on the other. Section openers,
+     big statements. Paired columns share equal top+bottom padding (64) so their
+     anchors align (SKILL.md → "paired anchored columns"). -->
+<style>
+  .split { display: grid; grid-template-columns: 42fr 58fr; width: 1280px; height: 720px; }
+  /* both columns vertically centered → no central void, balanced mass
+     (the lighter brand column reads as deliberate breathing room) */
+  .lhs { background: var(--c-primary); padding: 64px;
+         display: flex; flex-direction: column; justify-content: center; gap: 32px; }
+  .rhs { padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+  .lhs h2 { color: #ffffff; }
+  .lhs .eb { font-family: var(--ff-body); font-size: 13px; font-weight: 700;
+             letter-spacing: 0.4px; color: rgba(255,255,255,0.8); }
+  .lhs-top { display: flex; flex-direction: column; gap: 16px; }
+  .rhs-top { display: flex; flex-direction: column; gap: 8px; }
+  .checklist { display: flex; flex-direction: column; gap: 18px; }
+  .check-row { display: grid; grid-template-columns: 28px 1fr; gap: 14px; align-items: start; }
+  .check-row .n { width: 28px; height: 28px; border-radius: var(--r-pill);
+                  background: var(--alpha-brand-soft); display: flex; align-items: center; justify-content: center; }
+  .check-row .n p { color: var(--c-primary); font-weight: 700; font-size: 13px; line-height: 1.0; }
+  .check-row .ct { display: flex; flex-direction: column; gap: 3px; }
+</style>
+</head>
+<body>
+<section class="slide" style="padding:0;">
+  <div class="split">
+    <div class="lhs">
+      <div class="lhs-top">
+        <p class="eb">SECTION 02</p>
+        <h2 class="t-display-lg">측정 없이는<br>개선도 없다.</h2>
+      </div>
+      <div class="pill solid"><p>4가지 운영 원칙</p></div>
+    </div>
+
+    <div class="rhs">
+      <div class="rhs-top">
+        <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">운영 원칙</p></div>
+        <h3 class="t-headline">한 분기를 굴리는 규칙</h3>
+      </div>
+      <div class="checklist">
+        <div class="check-row">
+          <div class="n"><p>1</p></div>
+          <div class="ct"><p class="t-card-title">주간 단위로 측정한다</p><p class="t-body-sm muted">지표는 매주 같은 요일에 본다.</p></div>
+        </div>
+        <div class="check-row">
+          <div class="n"><p>2</p></div>
+          <div class="ct"><p class="t-card-title">하나의 핵심 지표</p><p class="t-body-sm muted">분기마다 북극성 지표 하나만.</p></div>
+        </div>
+        <div class="check-row">
+          <div class="n"><p>3</p></div>
+          <div class="ct"><p class="t-card-title">가설 → 실험 → 회고</p><p class="t-body-sm muted">실패도 기록으로 남긴다.</p></div>
+        </div>
+        <div class="check-row">
+          <div class="n"><p>4</p></div>
+          <div class="ct"><p class="t-card-title">숫자로 합의한다</p><p class="t-body-sm muted">의견이 아니라 데이터로.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

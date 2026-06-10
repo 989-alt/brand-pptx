@@ -1,0 +1,563 @@
+{
+  "slides": {
+    "1": {
+      "background_image": "images/home.png",
+      "picture_layer": {
+        "image": "images/home.png",
+        "name": "bg-photo",
+        "overscan": 0.02,
+        "effects": [
+          {
+            "type": "grow_shrink",
+            "sx": 1.1,
+            "sy": 1.1,
+            "dur": 4000,
+            "auto_rev": true,
+            "smooth": true,
+            "repeat": "indefinite"
+          }
+        ]
+      },
+      "shapes": [
+        {
+          "kind": "line",
+          "name": "dash-1",
+          "x": 300,
+          "y": 477,
+          "w": 130,
+          "h": 0,
+          "line": {
+            "w_pt": 7,
+            "dash": "dash",
+            "cap": "rnd",
+            "color": "FFFFFF",
+            "alpha": 80
+          }
+        },
+        {
+          "kind": "line",
+          "name": "dash-2",
+          "x": 580,
+          "y": 477,
+          "w": 130,
+          "h": 0,
+          "line": {
+            "w_pt": 7,
+            "dash": "dash",
+            "cap": "rnd",
+            "color": "FFFFFF",
+            "alpha": 80
+          }
+        },
+        {
+          "kind": "line",
+          "name": "dash-3",
+          "x": 860,
+          "y": 477,
+          "w": 130,
+          "h": 0,
+          "line": {
+            "w_pt": 7,
+            "dash": "dash",
+            "cap": "rnd",
+            "color": "FFFFFF",
+            "alpha": 80
+          }
+        },
+        {
+          "kind": "ellipse",
+          "name": "nav-opportunity",
+          "x": 160,
+          "y": 412,
+          "w": 130,
+          "h": 130,
+          "use_bg_fill": true,
+          "link_to_slide": 2,
+          "line": {
+            "w_pt": 4,
+            "color": "FFFFFF"
+          }
+        },
+        {
+          "kind": "ellipse",
+          "name": "nav-market",
+          "x": 440,
+          "y": 412,
+          "w": 130,
+          "h": 130,
+          "use_bg_fill": true,
+          "link_to_slide": 4,
+          "line": {
+            "w_pt": 4,
+            "color": "FFFFFF"
+          }
+        },
+        {
+          "kind": "ellipse",
+          "name": "nav-solution",
+          "x": 720,
+          "y": 412,
+          "w": 130,
+          "h": 130,
+          "use_bg_fill": true,
+          "link_to_slide": 5,
+          "line": {
+            "w_pt": 4,
+            "color": "FFFFFF"
+          }
+        },
+        {
+          "kind": "ellipse",
+          "name": "nav-bizmodel",
+          "x": 1000,
+          "y": 412,
+          "w": 130,
+          "h": 130,
+          "use_bg_fill": true,
+          "link_to_slide": 6,
+          "line": {
+            "w_pt": 4,
+            "color": "FFFFFF"
+          }
+        }
+      ]
+    },
+    "2": {
+      "transition": {
+        "type": "auto",
+        "adv_ms": 0
+      },
+      "rename_for_morph": [
+        {
+          "exact": "기회",
+          "name": "!!sec-title-opp"
+        }
+      ],
+      "shapes": [
+        {
+          "kind": "ellipse",
+          "name": "!!sec-circle-opp",
+          "x": 555,
+          "y": 275,
+          "w": 170,
+          "h": 170,
+          "line": {
+            "w_pt": 10,
+            "color": "FFFFFF"
+          }
+        }
+      ]
+    },
+    "3": {
+      "transition": {
+        "type": "morph",
+        "dur_ms": 1500
+      },
+      "background_image": "images/opportunity.png",
+      "rename_for_morph": [
+        {
+          "exact": "기회",
+          "name": "!!sec-title-opp"
+        }
+      ],
+      "shapes": [
+        {
+          "kind": "ellipse",
+          "name": "!!sec-circle-opp",
+          "x": 190,
+          "y": -90,
+          "w": 900,
+          "h": 900,
+          "line": {
+            "w_pt": 10,
+            "color": "FFFFFF"
+          }
+        },
+        {
+          "kind": "roundRect",
+          "name": "float-1",
+          "x": 760,
+          "y": 140,
+          "w": 190,
+          "h": 64,
+          "rot_deg": -15,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "motion_line",
+              "dy": -0.08,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            }
+          ]
+        },
+        {
+          "kind": "roundRect",
+          "name": "float-2",
+          "x": 960,
+          "y": 320,
+          "w": 220,
+          "h": 72,
+          "rot_deg": 10,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "motion_line",
+              "dy": -0.08,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 400
+            }
+          ]
+        },
+        {
+          "kind": "roundRect",
+          "name": "float-3",
+          "x": 820,
+          "y": 500,
+          "w": 170,
+          "h": 58,
+          "rot_deg": -8,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "motion_line",
+              "dy": -0.08,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 800
+            }
+          ]
+        }
+      ],
+      "dark_cover": {
+        "image": "images/opportunity.png",
+        "brightness": 0.42
+      }
+    },
+    "4": {
+      "background_image": "images/market.png",
+      "shapes": [
+        {
+          "kind": "rect",
+          "name": "bar-1",
+          "x": 640,
+          "y": 420,
+          "w": 70,
+          "h": 240,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "grow_shrink",
+              "sx": 1.0,
+              "sy": 1.25,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            },
+            {
+              "type": "motion_line",
+              "dy": -0.0208,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            }
+          ]
+        },
+        {
+          "kind": "rect",
+          "name": "bar-2",
+          "x": 740,
+          "y": 360,
+          "w": 70,
+          "h": 300,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "grow_shrink",
+              "sx": 1.0,
+              "sy": 1.25,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 300
+            },
+            {
+              "type": "motion_line",
+              "dy": -0.026,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 300
+            }
+          ]
+        },
+        {
+          "kind": "rect",
+          "name": "bar-3",
+          "x": 840,
+          "y": 470,
+          "w": 70,
+          "h": 190,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "grow_shrink",
+              "sx": 1.0,
+              "sy": 1.25,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 600
+            },
+            {
+              "type": "motion_line",
+              "dy": -0.0165,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 600
+            }
+          ]
+        },
+        {
+          "kind": "rect",
+          "name": "bar-4",
+          "x": 940,
+          "y": 400,
+          "w": 70,
+          "h": 260,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "grow_shrink",
+              "sx": 1.0,
+              "sy": 1.25,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 900
+            },
+            {
+              "type": "motion_line",
+              "dy": -0.0226,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 900
+            }
+          ]
+        },
+        {
+          "kind": "rect",
+          "name": "bar-5",
+          "x": 1040,
+          "y": 450,
+          "w": 70,
+          "h": 210,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "grow_shrink",
+              "sx": 1.0,
+              "sy": 1.25,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 1200
+            },
+            {
+              "type": "motion_line",
+              "dy": -0.0182,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 1200
+            }
+          ]
+        },
+        {
+          "kind": "rect",
+          "name": "bar-6",
+          "x": 1140,
+          "y": 380,
+          "w": 70,
+          "h": 280,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "grow_shrink",
+              "sx": 1.0,
+              "sy": 1.25,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 1500
+            },
+            {
+              "type": "motion_line",
+              "dy": -0.0243,
+              "dur": 2000,
+              "auto_rev": true,
+              "smooth": true,
+              "repeat": "indefinite",
+              "delay_ms": 1500
+            }
+          ]
+        }
+      ],
+      "dark_cover": {
+        "image": "images/market.png",
+        "brightness": 0.42
+      }
+    },
+    "5": {
+      "background_image": "images/solution.png",
+      "shapes": [
+        {
+          "kind": "ellipse",
+          "name": "bubble-1",
+          "x": 800,
+          "y": 430,
+          "w": 95,
+          "h": 95,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "motion_line",
+              "dy": -0.18,
+              "dur": 2000,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            },
+            {
+              "type": "fade_out",
+              "dur": 2000,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            }
+          ]
+        },
+        {
+          "kind": "ellipse",
+          "name": "bubble-2",
+          "x": 930,
+          "y": 460,
+          "w": 135,
+          "h": 135,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "motion_line",
+              "dy": -0.18,
+              "dur": 2000,
+              "repeat": "indefinite",
+              "delay_ms": 400
+            },
+            {
+              "type": "fade_out",
+              "dur": 2000,
+              "repeat": "indefinite",
+              "delay_ms": 400
+            }
+          ]
+        },
+        {
+          "kind": "ellipse",
+          "name": "bubble-3",
+          "x": 1100,
+          "y": 410,
+          "w": 72,
+          "h": 72,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "motion_line",
+              "dy": -0.18,
+              "dur": 2000,
+              "repeat": "indefinite",
+              "delay_ms": 800
+            },
+            {
+              "type": "fade_out",
+              "dur": 2000,
+              "repeat": "indefinite",
+              "delay_ms": 800
+            }
+          ]
+        }
+      ],
+      "dark_cover": {
+        "image": "images/solution.png",
+        "brightness": 0.42
+      }
+    },
+    "6": {
+      "background_image": "images/bizmodel.png",
+      "shapes": [
+        {
+          "kind": "gear6",
+          "name": "gear-cw",
+          "x": 740,
+          "y": 230,
+          "w": 270,
+          "h": 270,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "spin",
+              "deg": 360,
+              "dur": 7000,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            }
+          ]
+        },
+        {
+          "kind": "gear6",
+          "name": "gear-ccw",
+          "x": 975,
+          "y": 415,
+          "w": 185,
+          "h": 185,
+          "rot_deg": 30,
+          "use_bg_fill": true,
+          "effects": [
+            {
+              "type": "spin",
+              "deg": 360,
+              "dur": 7000,
+              "ccw": true,
+              "repeat": "indefinite",
+              "delay_ms": 0
+            }
+          ]
+        }
+      ],
+      "dark_cover": {
+        "image": "images/bizmodel.png",
+        "brightness": 0.42
+      }
+    }
+  }
+}

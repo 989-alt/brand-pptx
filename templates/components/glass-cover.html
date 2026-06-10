@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Cover — Glass</title>
+<link rel="stylesheet" href="base.css">
+<!-- 감각적 cover: frosted glass card + floating soft-3D tiles.
+     Use under a design.md that WELCOMES depth (light/consumer/brand systems).
+     Austere systems (Linear) should use the flat `hero` component instead. -->
+<style>
+  .top-bar.cover-bar { justify-content: space-between; }
+  .cover-body { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .cover-card {
+    width: 820px; align-items: center; text-align: center;
+    gap: 20px; padding: 56px 64px;
+  }
+  .cover-card h1 { letter-spacing: -3px; }
+  .cover-sub { max-width: 560px; }
+  .t-eyebrow-c { font-family: var(--ff-body); font-size: 15px; font-weight: 700;
+                 letter-spacing: 0.4px; color: var(--c-primary); }
+  /* floating soft-3D chips */
+  .tile-a { position: absolute; top: 132px; right: 188px; }
+  .tile-b { position: absolute; bottom: 150px; left: 196px; width: 44px; height: 44px; }
+  .tile-c { position: absolute; bottom: 196px; left: 250px; width: 36px; height: 36px; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar cover-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>MIRICOMPANY</p></div>
+    <p class="t-mono tertiary">2099.05.12</p>
+  </div>
+
+  <div class="icon-tile solid tile-a"></div>
+  <div class="icon-tile tile-b"></div>
+  <div class="icon-tile solid tile-c"></div>
+
+  <div class="cover-body">
+    <div class="glass-card cover-card">
+      <p class="t-eyebrow-c">보고와 발표에 모두 쓰는</p>
+      <h1 class="t-display-xl">캠페인 성과 보고서</h1>
+      <p class="t-subhead cover-sub">한 분기 동안의 핵심 성과를 한 장으로 압축해 전달합니다.</p>
+      <div class="pill solid"><p>Presenter · 마케팅팀 김미리</p></div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">2099 H1 · 마케팅 성과</p>
+    <p class="t-mono tertiary">cover · glass</p>
+  </div>
+</section>
+</body>
+</html>

@@ -331,6 +331,20 @@ const path = require('path');
 
 If any drift appears at either stage, **fix the SKILL** (base.css or component template, or insert `<br>` at meaning boundaries in the slide HTML), not by hand-tweaking coordinates. Re-render and re-verify both stages.
 
+### Phase F — Animation injection (optional, on request)
+
+When the user asks for PowerPoint animations (모핑 전환, 반복 애니메이션, 떠다니는 도형, 자라는 막대, 버블, 기어, 클릭형 내비게이션 등), do NOT attempt it through html2pptx/pptxgenjs — they have no animation support. Instead, post-process the static PPTX:
+
+```
+python3 scripts/inject_animations.py output/deck.pptx <manifest.json> output/deck-animated.pptx
+python3 scripts/validate_pptx.py output/deck-animated.pptx     # must exit 0
+```
+
+- **Full spec and OOXML recipes**: `references/animation-effects.md` — read it BEFORE writing a manifest. It covers the slide-background-fill trick (`useBgFill` + bright bgPr image + dark cover layer), motion paths, grow/shrink+path combo bars, bubbles (path+fade), `gear6` preset spins, morph transition with `!!` name matching, 0-sec auto-advance, and hyperlink navigation (`hlinksldjump`) as the section-zoom substitute.
+- **Manifest example**: `examples/animations-example.json` (6-slide deck exercising all seven effects).
+- **Two verified pitfalls** (found in the validation loop, detailed in the doc's §1.1/§1.4/§4): (1) html2pptx paints the canvas as a `bgPr` solid fill, not a shape — so a background image replaces the dark canvas and `useBgFill` shapes camouflage; a darkened picture cover layer at spTree index 2 is REQUIRED. (2) `p:animScale`'s `<p:by>` is an empty element with x/y attributes (CT_TLPoint), never an `<a:pt>` child.
+- **Verification**: validate_pptx.py (package integrity + XML contracts) is mandatory; for any new effect type also run ECMA-376 XSD validation per §3 of the doc. Morph requires PowerPoint 2019/365 (older clients get the fade fallback automatically).
+
 ### Iterate in 5-slide batches — never write all slides at once
 
 For decks > ~10 slides, do NOT generate the entire deck in one pass. Author 5 slides → render screenshots → open and inspect every PNG → fix any issues in `base.css` or the slide HTML → only then continue to the next batch of 5. The benefits compound:
@@ -673,7 +687,9 @@ brand-pptx/
 │   ├── font_discovery.py         ← scan local fonts, tone-match, emit selected-fonts.json
 │   ├── build_pptx.js             ← orchestrator: html → editable pptx via html2pptx
 │   ├── html2pptx.js              ← copied from skills/pptx so local node_modules resolve
-│   └── screenshot_slides.py      ← Playwright render at 1280×720@2x for verification
+│   ├── screenshot_slides.py      ← Playwright render at 1280×720@2x for verification
+│   ├── inject_animations.py      ← Phase F: OOXML timing/transition/bg-trick injector
+│   └── validate_pptx.py          ← Phase F-Verify: integrity + XML contract checks
 ├── templates/
 │   ├── base.css                  ← tokens (CSS variables incl. --c-primary-rgb + --alpha-*), text classes, components
 │   └── components/
@@ -697,9 +713,11 @@ brand-pptx/
 │       ├── infographic-roadmap-spatial.html
 │       └── infographic-narrative-stat.html
 ├── references/
-│   └── alignment-guardrails.md   ← anti-patterns + why
+│   ├── alignment-guardrails.md   ← anti-patterns + why
+│   └── animation-effects.md      ← Phase F: 7 animation effect OOXML recipes + pitfalls
 └── examples/
-    └── linear-rag-deck/          ← reference 6-slide deck (Linear DESIGN.md)
+    ├── linear-rag-deck/          ← reference 6-slide deck (Linear DESIGN.md)
+    └── animations-example.json   ← Phase F manifest exercising all seven effects
 ```
 
 ## Required dependencies

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Stats 4-up — KPI Dashboard</title>
+<link rel="stylesheet" href="base.css">
+<!-- N · Stats 4-up: four core KPIs as a dashboard. Numbers are the visual —
+     no photo. Each card = label + big stat-callout + delta caption. -->
+<style>
+  .kpi-body { flex: 1; display: flex; flex-direction: column; gap: 28px; padding-top: 28px; }
+  .kpi-head { display: flex; flex-direction: column; gap: 8px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; flex: 1; align-items: stretch; }
+  .kpi-card { gap: 14px; justify-content: space-between; }
+  .kpi-card .delta { display: flex; align-items: center; gap: 6px; }
+  .kpi-card .delta .up { color: var(--c-success); font-weight: 700; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>Linear</p></div>
+  </div>
+
+  <div class="kpi-body">
+    <div class="kpi-head">
+      <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">핵심 지표</p></div>
+      <h2 class="t-display-md">한 분기를 네 숫자로.</h2>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="card kpi-card">
+        <p class="t-eyebrow">MAU</p>
+        <p class="t-stat">48<span class="unit">K</span></p>
+        <p class="t-body-sm delta"><span class="up">▲ 12%</span><span class="muted">전월 대비</span></p>
+      </div>
+      <div class="card kpi-card">
+        <p class="t-eyebrow">전환율</p>
+        <p class="t-stat">6.2<span class="unit">%</span></p>
+        <p class="t-body-sm delta"><span class="up">▲ 1.4%p</span><span class="muted">전월 대비</span></p>
+      </div>
+      <div class="card kpi-card">
+        <p class="t-eyebrow">NPS</p>
+        <p class="t-stat">61</p>
+        <p class="t-body-sm delta"><span class="up">▲ 8</span><span class="muted">전분기 대비</span></p>
+      </div>
+      <div class="card kpi-card">
+        <p class="t-eyebrow">CAC</p>
+        <p class="t-stat">₩9.1<span class="unit">만</span></p>
+        <p class="t-body-sm delta"><span class="up">▼ 18%</span><span class="muted">효율 개선</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">숫자가 곧 메시지다.</p>
+    <p class="t-mono tertiary">stats · 4-up</p>
+  </div>
+</section>
+</body>
+</html>

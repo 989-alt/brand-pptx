@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Chart — Donut (native pptx, editable)</title>
+<link rel="stylesheet" href="base.css">
+<!-- GS Donut Survey: one headline ratio. Native pptxgenjs doughnut fills the
+     `placeholder`; the big % in the center is a real <p> overlaid on top (it is
+     a sibling of the placeholder, so it renders in pptx). svg = browser preview.
+     Copy chart-donut.charts.json → slide-NN.charts.json next to your slide. -->
+<style>
+  .chart-body { flex: 1; display: grid; grid-template-columns: 360px 1fr; gap: 56px;
+                align-items: center; padding-top: 8px; }
+  .donut-wrap { position: relative; width: 360px; height: 360px; }
+  .donut-wrap .chart-slot { width: 360px; height: 360px; border-radius: 50%; }
+  .donut-wrap svg { width: 100%; height: 100%; display: block; }
+  .donut-center {
+    position: absolute; top: 0; left: 0; width: 360px; height: 360px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .donut-center p { font-family: var(--ff-display); font-weight: 700; font-size: 88px;
+                    letter-spacing: -3px; color: var(--c-primary); line-height: 1.0; }
+  .donut-center .unit { font-size: 40px; }
+  .donut-side { display: flex; flex-direction: column; gap: 16px; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>Linear</p></div>
+  </div>
+
+  <div class="chart-body">
+    <div class="donut-wrap">
+      <div class="placeholder chart-slot" id="chart-donut">
+        <svg viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" stroke="#23252a" stroke-width="16"/>
+          <circle cx="60" cy="60" r="48" fill="none" stroke="#5e6ad2" stroke-width="16"
+                  stroke-dasharray="259 302" stroke-dashoffset="75" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="donut-center"><p>86<span class="unit">%</span></p></div>
+    </div>
+
+    <div class="donut-side">
+      <div class="eyebrow-row"><div class="dot"></div><p class="t-eyebrow">무료→유료 전환</p></div>
+      <h2 class="t-display-md">10명 중 9명이<br>유료로 남았다.</h2>
+      <p class="t-body-lg muted">온보딩을 끝낸 사용자 기준, 첫 달 유료 전환율.<br>업계 평균(62%)을 크게 웃돈다.</p>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="t-caption tertiary">전환율 업계 평균 1.4×</p>
+    <p class="t-mono tertiary">chart · donut</p>
+  </div>
+</section>
+</body>
+</html>

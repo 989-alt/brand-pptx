@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Executive Summary — Brand Band</title>
+<link rel="stylesheet" href="base.css">
+<!-- Saturated brand-color slide (north-star / section peak). Frosted white-veil
+     cards on the brand canvas + timeline + pill headers + stat callout.
+     The brand canvas is the slide background; cards carry dark text. -->
+<style>
+  body { background: var(--c-primary); }                 /* full brand canvas */
+  .top-bar .brand-sq { background: #ffffff; }
+  .sum-body { flex: 1; display: flex; flex-direction: column; gap: 28px; padding-top: 28px; }
+  .sum-head { display: grid; grid-template-columns: auto 1fr; align-items: end; gap: 40px; }
+  .sum-head h2 { color: #ffffff; line-height: 1.02; }
+  .sum-sub { color: rgba(255,255,255,0.82); max-width: 520px; padding-bottom: 6px; }
+
+  /* timeline visible on the brand canvas */
+  .timeline-dot { background: #ffffff; box-shadow: none; }
+  .timeline-line { background: rgba(255,255,255,0.32); }
+
+  .sum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; flex: 1; align-items: stretch; }
+  /* space-between → pill (top) · content (mid) · footer (bottom) fill the card,
+     no empty bottom; all three cards share the same bottom anchor */
+  .sum-card { padding: 22px; justify-content: space-between; }
+  .sum-card h3, .sum-card p { color: var(--c-canvas); }   /* dark text on white veil */
+  .sum-card .muted { color: var(--c-ink-tertiary); }
+  .sum-card .mid { display: flex; flex-direction: column; gap: 8px; }
+  .sum-card .foot { padding-top: 14px; border-top: 1px solid rgba(1,1,2,0.10); }
+  .sum-card .stat-row { display: flex; gap: 28px; align-items: baseline; }
+  .sum-card .stat-unit { display: flex; flex-direction: column; gap: 2px; }
+</style>
+</head>
+<body>
+<section class="slide">
+  <div class="top-bar">
+    <div class="brand-mark"><div class="brand-sq"></div><p>MIRICOMPANY</p></div>
+  </div>
+
+  <div class="sum-body">
+    <div class="sum-head">
+      <h2 class="t-display-lg">EXECUTIVE<br>SUMMARY</h2>
+      <p class="t-subhead sum-sub">전체 캠페인의 가장 핵심적인 성과를<br>한 문장으로 요약합니다.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-dot"></div><div class="timeline-line"></div>
+      <div class="timeline-dot"></div><div class="timeline-line"></div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="sum-grid">
+      <div class="glass-card on-color sum-card">
+        <div class="pill solid"><p>개요</p></div>
+        <div class="mid">
+          <p class="t-body-sm muted">기간</p>
+          <p class="t-card-title">2099.03 — 05</p>
+          <p class="t-body-sm muted">타깃 · 20–30대 관심 유저</p>
+        </div>
+        <div class="foot"><p class="t-body-sm muted">캠페인 기본 정보</p></div>
+      </div>
+
+      <div class="glass-card on-color sum-card">
+        <div class="pill solid"><p>과정</p></div>
+        <div class="mid">
+          <p class="t-card-title">SNS 광고 + 해시태그</p>
+          <p class="t-body-sm muted">챌린지 2,300건 참여</p>
+          <p class="t-card-title">인플루언서 협업</p>
+          <p class="t-body-sm muted">주요 채널 4종 동시 집행</p>
+        </div>
+        <div class="foot"><p class="t-body-sm muted">두 축으로 동시 진행</p></div>
+      </div>
+
+      <div class="glass-card on-color sum-card">
+        <div class="pill solid"><p>결과</p></div>
+        <div class="mid stat-row">
+          <div class="stat-unit">
+            <p class="t-body-sm muted">전환율</p>
+            <p class="t-stat-sm">127<span class="unit">%</span></p>
+          </div>
+          <div class="stat-unit">
+            <p class="t-body-sm muted">목표 대비</p>
+            <p class="t-stat-sm">2.4<span class="unit">×</span></p>
+          </div>
+        </div>
+        <div class="foot"><p class="t-body-sm muted">목표를 크게 웃돈 분기</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar" style="border-color: rgba(255,255,255,0.25);">
+    <p class="t-caption" style="color: rgba(255,255,255,0.7);">한 장으로 끝내는 핵심 요약</p>
+    <p class="t-mono" style="color: rgba(255,255,255,0.7);">summary · band</p>
+  </div>
+</section>
+</body>
+</html>

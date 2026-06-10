@@ -1,0 +1,21 @@
+[
+  {
+    "placeholder": "chart-donut",
+    "type": "doughnut",
+    "data": [
+      {
+        "name": "전환",
+        "labels": ["유료 전환", "이탈"],
+        "values": [86, 14]
+      }
+    ],
+    "options": {
+      "showLegend": false,
+      "showTitle": false,
+      "showValue": false,
+      "holeSize": 72,
+      "chartColors": ["5E6AD2", "23252A"],
+      "dataBorder": { "pct": 0, "color": "010102" }
+    }
+  }
+]
