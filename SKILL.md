@@ -160,6 +160,7 @@ The audit in "Iterate in 5-slide batches" exists to catch failures, but failures
 - Surface mode picked from the rotation rhythm (not default canvas)
 - Composition pattern differs from the previous slide
 - The slide is *layered*, not flat canvas + black-on-white text + hairlines
+- **Density**: content grid flexes to fill the canvas; card interiors distribute to read full (no short content stranded atop a stretched card); type/images sized to their cell. No dead region larger than a card-gap on a body slide (see "Density — the canvas reads full")
 - One key phrase identified, styled with the hierarchy (color · weight · size)
 - Title is declarative — no `왜 ~인가` / `어떻게 ~할까` / `Why X?` self-questioning forms
 - No filler phrases (`함께 알아볼까요?`, `Let's dive in`), no emoji, no per-slide page numbers
@@ -403,6 +404,20 @@ These prevent the deck from reading "AI-generated." They are universal — apply
 
 These rules complement "Composition layers" (which governs deck-wide rotation) by governing what happens *inside* a single slide. They were extracted from production failures observed when slides were rendered: metadata overload on covers, footer-rows that recap the body, split layouts with one column half-empty, and cards with auxiliary text orphaned at the bottom.
 
+### Density — the canvas reads full, not hollow
+
+This is a governing preference, extracted from production feedback where "content-height cards centered in the canvas" read as sparse and unfinished. **Whitespace is breathing room *between* elements, not large empty regions.** A finished body slide fills its canvas; a hollow one looks like a draft.
+
+Apply on every **body** slide (covers and section dividers may breathe more — see the economy rules below):
+
+- **Let content grids fill the full canvas.** Use `flex: 1` on the content region so the cards occupy the whole area between header and footer. Do NOT wrap the content in a `justify-content: center` block that strands large voids above and below — that was the failure. If you want the block centered for a genuinely light slide, center it; but first try to fill.
+- **Fill card interiors — distribute, don't strand.** A card stretched to full height with three short rows pinned at the top is the "empty stretched card" anti-pattern. Make the rows themselves `flex: 1` (they divide the card height evenly, separated by hairlines) or use `justify-content: space-between`, so the interior reads full. Short content in a tall card must either distribute to fill or the card shrinks to content height — never content-at-top + void-below.
+- **Size type and imagery to the cell.** Enlarge body text so it occupies its card (13–15px body, larger stats/numbers) rather than tiny text floating in a big card. Hero/illustration images fill their column **at their true aspect ratio** — author the slot to match the asset's ratio (e.g. a square slot via `aspect-ratio: 1/1` for a 1:1 asset) so the image fills without distortion or letterbox voids.
+- **The hollow test.** If a slide has any region larger than ~one card-gap containing nothing — no text, shape, image, or *intentional* focal breathing — pull the surrounding content out to fill it, enlarge the content, or add a meaningful unit. A body slide whose content occupies less than ~85% of the usable canvas is too sparse; rebalance.
+- **Fill densely, but never at the cost of alignment or rhythm.** Density means the canvas is used, not that elements are crammed until they touch or overlap. The edge-alignment and spacing-rhythm rules still hold. Dense *and* precise.
+
+This tempers — it does not repeal — the "generous whitespace" instinct elsewhere in this skill. Reconcile them as: **breathing between elements, yes; large dead zones on a body slide, no.**
+
 ### Cover and section-divider economy
 
 A cover slide and a section divider have ONE job: slow the eye on a single phrase. They are NOT metadata sheets. Limit them to **three textual elements maximum**:
@@ -581,6 +596,8 @@ Common deletion candidates that production decks accumulate:
 - **Do not use stock "innovation" photography** (smiling professionals pointing at laptops, abstract glow gradients, generic neural-network visuals). Subject-matter photos with editorial value only — see "Photos and imagery" above.
 - **Do not stack 4+ textual elements on a cover or section divider.** Three maximum: one identifier, one headline, one supporting line — see "Cover and section-divider economy" above. `brand-mark + eyebrow + headline + subhead + bottom-left caption + bottom-right caption + corner badge` is six elements; the headline loses.
 - **Do not write a footer-row that recaps what the body already shows.** Cards saying `1차시 / 2차시 / 3차시` do not need `총 3차시 · 약 9시간` underneath. Footer-rows carry new information or get deleted entirely (hairline included).
+- **Do not leave a body slide hollow.** Content-height cards centered in the canvas with large voids above/below read as an unfinished draft. Let the content grid `flex:1` to fill, distribute card interiors so they read full, and size type/images to their cell. A body slide whose content fills less than ~85% of the usable canvas is too sparse — see "Density — the canvas reads full, not hollow" above. (Covers/dividers may breathe more.)
+- **Do not stretch a card to full height and pin its few rows at the top.** That is the "empty stretched card" — void below the content. Make the rows `flex:1` (divide the height evenly) or `justify-content: space-between`, or shrink the card to content height. Never content-at-top + void-below.
 - **Do not let one column of a split layout sit half-empty.** A 5-item column next to a 1-stat column is half-empty regardless of how strong the stat is. Equalize density, vertical-center the light side, or add ONE meaningful supporting element — never filler text — see "Column balance in split layouts" above.
 - **Do not use `margin-top: auto` to orphan a card's auxiliary line at the bottom while the middle goes blank.** The eye reads "empty card" and skips the focal. Either compress the card or genuinely fill the middle — see "Cards: focal block stays compact" above.
 - **Do not let a shape's edges float misaligned with the adjacent text column's first/last content edges.** A coral card with `align-self: center` next to a 5-item checklist creates two new horizontal lines the eye reads as "almost-finished." Stretch the shape (and fill its middle), hard-set its height, or top-align it and accept the column extending below — see "Edge alignment" above.
